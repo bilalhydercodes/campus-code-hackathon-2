@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 import { EditProfileDialogDemo, ProfileFormData } from '@/components/ui/demo';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { useCharacterLimit } from '@/components/ui/dialog-utils/use-character-limit';
 import {
   User,
   ShieldCheck,
@@ -12,12 +8,9 @@ import {
   Calendar,
   Mail,
   Hash,
-  Save,
   Check,
-  RotateCcw,
-  Sparkles,
   ExternalLink,
-  Code2
+  Edit3
 } from 'lucide-react';
 import { mockUser, UserProfile } from '../../data/user';
 
@@ -30,30 +23,17 @@ export default function ProfileView({
   user = mockUser,
   onUpdateUser,
 }: ProfileViewProps) {
-  // Profile form state
   const [name, setName] = useState(user.name || 'Sai');
   const [email, setEmail] = useState(user.email || 'sai@campuscode.co.in');
   const [username, setUsername] = useState(user.username || 'sai_builder');
   const [website, setWebsite] = useState(user.website || 'https://campuscode.co.in');
   const [track, setTrack] = useState(user.track || 'Frontend Specialist');
-  
-  const maxLength = 240;
-  const {
-    value: bio,
-    characterCount,
-    handleChange: handleBioChange,
-    maxLength: limit,
-  } = useCharacterLimit({
-    maxLength,
-    initialValue:
-      user.bio ||
-      'Web developer and hackathon enthusiast passionate about turning ideas into production-ready platforms. Participating in the ReBuild \'26 Arena Hackathon.',
-  });
-
-  // Save feedback state
-  const [isSaving, setIsSaving] = useState(false);
+  const [bio, setBio] = useState(
+    user.bio ||
+      'Web developer and hackathon enthusiast passionate about turning ideas into production-ready platforms. Participating in the ReBuild \'26 Arena Hackathon.'
+  );
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(user.avatarUrl);
   const [showSavedAlert, setShowSavedAlert] = useState(false);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Sync state if user prop changes
   useEffect(() => {
@@ -62,59 +42,17 @@ export default function ProfileView({
     if (user.username) setUsername(user.username);
     if (user.website) setWebsite(user.website);
     if (user.track) setTrack(user.track);
+    if (user.bio) setBio(user.bio);
+    if (user.avatarUrl) setAvatarUrl(user.avatarUrl);
   }, [user]);
-
-  // Track if changes are dirty
-  const handleInputChange = (setter: (val: string) => void, val: string) => {
-    setter(val);
-    setHasUnsavedChanges(true);
-    setShowSavedAlert(false);
-  };
-
-  const handleSaveAll = (e?: React.FormEvent) => {
-    e?.preventDefault();
-    setIsSaving(true);
-
-    const updatedUser: UserProfile = {
-      ...user,
-      name: name.trim() || user.name,
-      email: email.trim() || user.email,
-      username: username.trim() || user.username,
-      website: website.trim() || user.website,
-      track: track.trim() || user.track,
-      bio: bio.trim(),
-      avatar_initials: (name.trim() || user.name).charAt(0).toUpperCase(),
-    };
-
-    // Update parent state & localStorage
-    if (onUpdateUser) {
-      onUpdateUser(updatedUser);
-    } else {
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-    }
-
-    setTimeout(() => {
-      setIsSaving(false);
-      setHasUnsavedChanges(false);
-      setShowSavedAlert(true);
-      setTimeout(() => setShowSavedAlert(false), 3500);
-    }, 400);
-  };
-
-  const handleDiscard = () => {
-    setName(user.name || 'Sai');
-    setEmail(user.email || 'sai@campuscode.co.in');
-    setUsername(user.username || 'sai_builder');
-    setWebsite(user.website || 'https://campuscode.co.in');
-    setTrack(user.track || 'Frontend Specialist');
-    setHasUnsavedChanges(false);
-  };
 
   const handleModalSave = (data: ProfileFormData) => {
     setName(data.name);
     setUsername(data.username);
     setWebsite(data.website);
-    
+    setBio(data.bio);
+    if (data.avatarUrl) setAvatarUrl(data.avatarUrl);
+
     const updatedUser: UserProfile = {
       ...user,
       name: data.name,
@@ -133,15 +71,14 @@ export default function ProfileView({
     }
 
     setShowSavedAlert(true);
-    setHasUnsavedChanges(false);
     setTimeout(() => setShowSavedAlert(false), 3500);
   };
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 pb-16">
+    <div className="mx-auto max-w-5xl space-y-6 pb-12">
       {/* Save Success Alert Notification */}
       {showSavedAlert && (
-        <div className="flex items-center justify-between rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-emerald-900 shadow-sm animate-in fade-in slide-in-from-top-2">
+        <div className="flex items-center justify-between rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-emerald-900 shadow-xs animate-in fade-in slide-in-from-top-2">
           <div className="flex items-center gap-3">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white">
               <Check className="h-4 w-4 stroke-[3]" />
@@ -161,13 +98,21 @@ export default function ProfileView({
         </div>
       )}
 
-      {/* Top Banner and Profile Summary Header */}
-      <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white p-6 sm:p-8 shadow-sm">
+      {/* Top Banner and Profile Header */}
+      <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white p-6 sm:p-8 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 text-2xl font-bold text-white shadow-md">
-              {user.avatar_initials || name.charAt(0)}
-            </div>
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt={name}
+                className="h-16 w-16 rounded-full object-cover border-2 border-purple-500 shadow-md"
+              />
+            ) : (
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 text-2xl font-bold text-white shadow-md">
+                {name.charAt(0).toUpperCase()}
+              </div>
+            )}
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-black tracking-tight text-gray-900">
@@ -183,7 +128,7 @@ export default function ProfileView({
             </div>
           </div>
 
-          {/* Quick Edit Dialog Modal Trigger */}
+          {/* Upper Action Button (Edit Profile Modal) */}
           <div className="flex items-center gap-2">
             <EditProfileDialogDemo
               initialData={{
@@ -192,12 +137,16 @@ export default function ProfileView({
                 username,
                 website,
                 bio,
+                avatarUrl,
               }}
               onSave={handleModalSave}
               trigger={
-                <Button variant="outline" className="flex items-center gap-2 font-bold cursor-pointer hover:bg-gray-50 border-gray-300">
-                  <Sparkles className="h-4 w-4 text-purple-600" />
-                  Edit via Modal
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 font-bold cursor-pointer hover:bg-gray-50 border-gray-300"
+                >
+                  <Edit3 className="h-4 w-4 text-purple-600" />
+                  Edit profile
                 </Button>
               }
             />
@@ -225,177 +174,51 @@ export default function ProfileView({
         </div>
       </div>
 
-      {/* Main Profile Settings Form */}
-      <form onSubmit={handleSaveAll} className="space-y-6">
-        <div className="rounded-2xl border border-black/10 bg-white p-6 sm:p-8 shadow-sm space-y-6">
-          <div className="border-b border-gray-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <h2 className="text-lg font-extrabold text-gray-900 flex items-center gap-2">
-                <User className="h-5 w-5 text-purple-600" /> Profile Information
-              </h2>
-              <p className="text-xs text-gray-500">Update your builder identity, track specialization, and public links.</p>
+      {/* Profile Details Information Grid */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Builder Bio Card */}
+        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-xs">
+          <h2 className="flex items-center gap-2 text-base font-bold text-gray-900">
+            <User className="h-4 w-4 text-purple-600" /> Builder Bio & Status
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-gray-600 whitespace-pre-line">
+            {bio}
+          </p>
+        </div>
+
+        {/* Credentials & Track Card */}
+        <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-xs">
+          <h2 className="flex items-center gap-2 text-base font-bold text-gray-900">
+            <Award className="h-4 w-4 text-purple-600" /> Credentials & Track
+          </h2>
+          <div className="mt-3 space-y-2.5 text-sm text-gray-600">
+            <div className="flex justify-between py-1 border-b border-gray-100">
+              <span className="font-medium text-gray-500">Track:</span>
+              <span className="font-bold text-gray-900">{track}</span>
             </div>
-
-            {hasUnsavedChanges && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700 animate-pulse">
-                • Unsaved changes
-              </span>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {/* Full Name */}
-            <div className="space-y-1.5">
-              <Label htmlFor="profile-name" className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                Full Name
-              </Label>
-              <Input
-                id="profile-name"
-                value={name}
-                onChange={(e) => handleInputChange(setName, e.target.value)}
-                placeholder="Your full name"
-                required
-                className="font-medium"
-              />
-            </div>
-
-            {/* Username */}
-            <div className="space-y-1.5">
-              <Label htmlFor="profile-username" className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                Username / Handle
-              </Label>
-              <div className="relative">
-                <Input
-                  id="profile-username"
-                  value={username}
-                  onChange={(e) => handleInputChange(setUsername, e.target.value)}
-                  placeholder="username"
-                  required
-                  className="font-medium pe-9"
-                />
-                <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3 text-emerald-500">
-                  <Check className="h-4 w-4" />
-                </div>
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="space-y-1.5">
-              <Label htmlFor="profile-email" className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                Email Address
-              </Label>
-              <Input
-                id="profile-email"
-                type="email"
-                value={email}
-                onChange={(e) => handleInputChange(setEmail, e.target.value)}
-                placeholder="your.email@university.edu"
-                required
-                className="font-medium"
-              />
-            </div>
-
-            {/* Track Specialization */}
-            <div className="space-y-1.5">
-              <Label htmlFor="profile-track" className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                Track / Specialization
-              </Label>
-              <Input
-                id="profile-track"
-                value={track}
-                onChange={(e) => handleInputChange(setTrack, e.target.value)}
-                placeholder="Frontend Specialist, AI Engineer, etc."
-                className="font-medium"
-              />
-            </div>
-
-            {/* Website / Portfolio */}
-            <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="profile-website" className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                Portfolio / Website
-              </Label>
-              <div className="flex rounded-md shadow-xs">
-                <span className="inline-flex items-center rounded-s-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-xs text-gray-500">
-                  <ExternalLink className="h-3.5 w-3.5 me-1" /> https://
-                </span>
-                <Input
-                  id="profile-website"
-                  value={website.replace(/^https?:\/\//, '')}
-                  onChange={(e) => handleInputChange(setWebsite, e.target.value)}
-                  placeholder="yourportfolio.dev"
-                  className="rounded-s-none font-medium"
-                />
-              </div>
-            </div>
-
-            {/* Biography */}
-            <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="profile-bio" className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                Builder Biography
-              </Label>
-              <Textarea
-                id="profile-bio"
-                value={bio}
-                maxLength={maxLength}
-                onChange={(e) => {
-                  handleBioChange(e);
-                  setHasUnsavedChanges(true);
-                  setShowSavedAlert(false);
-                }}
-                rows={3}
-                placeholder="Tell other builders and hackathon judges about your skills, interests, and current projects."
-                className="font-medium text-sm"
-              />
-              <div className="flex justify-between items-center text-xs text-gray-500 mt-1">
-                <span>Markdown supported. Max {maxLength} characters.</span>
-                <span className="font-mono text-purple-600 font-bold">{limit - characterCount} characters left</span>
-              </div>
-            </div>
-          </div>
-
-          {/* ======================================================== */}
-          {/* THE SAVE BUTTON SECTION (Explicit, prominent & responsive) */}
-          {/* ======================================================== */}
-          <div className="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-xs text-gray-500 flex items-center gap-1.5">
-              <Code2 className="h-4 w-4 text-purple-600" />
-              <span>CampusCode Arena Platform · Changes sync across your digital card and pass</span>
-            </div>
-
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              {hasUnsavedChanges && (
-                <button
-                  type="button"
-                  onClick={handleDiscard}
-                  className="flex items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-xs font-bold text-gray-700 shadow-xs hover:bg-gray-50 transition-colors cursor-pointer w-full sm:w-auto"
-                >
-                  <RotateCcw className="h-3.5 w-3.5" /> Discard
-                </button>
-              )}
-
-              <button
-                type="submit"
-                disabled={isSaving}
-                className="flex items-center justify-center gap-2 rounded-lg border-[2px] border-black bg-black px-6 py-2.5 text-xs font-black text-white uppercase tracking-wider shadow-[4px_4px_0px_0px_#8B5CF6] transition-transform active:translate-x-1 active:translate-y-1 active:shadow-none hover:bg-zinc-800 disabled:opacity-50 cursor-pointer w-full sm:w-auto"
+            <div className="flex justify-between py-1 border-b border-gray-100">
+              <span className="font-medium text-gray-500">Website:</span>
+              <a
+                href={website.startsWith('http') ? website : `https://${website}`}
+                target="_blank"
+                rel="noreferrer"
+                className="font-bold text-purple-600 hover:underline flex items-center gap-1"
               >
-                {isSaving ? (
-                  <span>Saving...</span>
-                ) : showSavedAlert ? (
-                  <>
-                    <Check className="h-4 w-4 text-emerald-400 stroke-[3]" />
-                    <span>Saved!</span>
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4" />
-                    <span>Save Changes</span>
-                  </>
-                )}
-              </button>
+                {website.replace(/^https?:\/\//, '')}
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+            <div className="flex justify-between py-1 border-b border-gray-100">
+              <span className="font-medium text-gray-500">Hackathons Entered:</span>
+              <span className="font-bold text-gray-900">3 Total (1 Active)</span>
+            </div>
+            <div className="flex justify-between py-1">
+              <span className="font-medium text-gray-500">Team Status:</span>
+              <span className="font-bold text-emerald-600">Team Formed (HackMate AI)</span>
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
