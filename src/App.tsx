@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage';
 import StudentDashboardPage from './pages/StudentDashboardPage';
 import DigitalIdPage from './pages/DigitalIdPage';
 import CertificatesPage from './pages/CertificatesPage';
+import StudentGuidePage from './pages/StudentGuidePage';
 
 export default function App() {
   return (
@@ -23,6 +24,8 @@ export default function App() {
           <Route path="/id" element={<DigitalIdPage />} />
           <Route path="/certificates" element={<CertificatesPage />} />
           <Route path="/achievements" element={<CertificatesPage />} />
+          <Route path="/guide" element={<StudentGuidePage />} />
+          <Route path="/student-guide" element={<StudentGuidePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
