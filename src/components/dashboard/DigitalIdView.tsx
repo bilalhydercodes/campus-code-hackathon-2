@@ -17,8 +17,8 @@ export default function DigitalIdView({
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = '/assets/lanyard-digital-id.jpg';
-    link.download = 'CampusCode-Digital-Pass.jpg';
+    link.href = '/assets/lanyard-digital-id.png';
+    link.download = 'CampusCode-Digital-Pass.png';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
