@@ -59,3 +59,4 @@ export function useImageUpload(): UseImageUploadReturn {
 }
 
 export default useImageUpload;
+

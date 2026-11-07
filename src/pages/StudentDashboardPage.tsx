@@ -59,6 +59,11 @@ export default function StudentDashboardPage() {
     setTimeout(() => setActiveTab(prev), 100);
   };
 
+  const handleUpdateUser = (updated: UserProfile) => {
+    setUser(updated);
+    localStorage.setItem('user', JSON.stringify(updated));
+  };
+
   const renderActiveView = () => {
     switch (activeTab) {
       case 'Overview':
@@ -79,7 +84,7 @@ export default function StudentDashboardPage() {
       case 'Playbook':
         return <StudentGuideView />;
       case 'Profile':
-        return <ProfileView user={user} />;
+        return <ProfileView user={user} onUpdateUser={handleUpdateUser} />;
       default:
         return <PlaceholderView title={activeTab} onNavigateTab={setActiveTab} />;
     }
