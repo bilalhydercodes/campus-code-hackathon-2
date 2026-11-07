@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="aiBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#100C24"/>
+      <stop offset="100%" stopColor="#080614"/>
+    </linearGradient>
+    <linearGradient id="purpleRibbonMain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#9E90FF" />
+      <stop offset="40%" stopColor="#7665FF" />
+      <stop offset="100%" stopColor="#4332D6" />
+    </linearGradient>
+    <linearGradient id="purpleRibbonSheen" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#E2DEFF" stopOpacity="0.95" />
+      <stop offset="50%" stopColor="#9E90FF" stopOpacity="0.4" />
+      <stop offset="100%" stopColor="#4332D6" stopOpacity="0" />
+    </linearGradient>
+    <radialGradient id="aiGlow" cx="75%" cy="50%" r="55%">
+      <stop offset="0%" stopColor="#7665FF" stopOpacity="0.35"/>
+      <stop offset="100%" stopColor="transparent"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="450" rx="20" fill="url(#aiBg)"/>
+  <rect width="800" height="450" rx="20" fill="url(#aiGlow)"/>
+
+  <!-- Right Graphic: 3D Volumetric Purple Silk Ribbon -->
+  <g transform="translate(500, 0)">
+    <path d="M40 0C110 100 230 150 160 280C110 370 190 400 320 450V0H40Z" fill="#3122B8" opacity="0.6"/>
+    <path d="M90 0C160 90 260 160 190 270C130 360 180 400 320 450V0H90Z" fill="url(#purpleRibbonMain)"/>
+    <path d="M104 0C176 96 264 164 196 276C144 364 200 400 320 450" stroke="url(#purpleRibbonSheen)" stroke-width="28" stroke-linecap="round"/>
+    <path d="M136 20C196 110 276 180 220 290" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- Left Content -->
+  <g transform="translate(60, 80)">
+    <rect width="130" height="32" rx="16" fill="#7665FF" fill-opacity="0.2" stroke="#7665FF" stroke-width="1.5"/>
+    <text x="22" y="21" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#9E90FF" letter-spacing="1.5">OPEN TRACK</text>
+    <text x="150" y="21" font-family="'DM Mono', monospace" font-size="12" fill="#FFFFFF" fill-opacity="0.5">CC-AI26</text>
+
+    <text x="0" y="95" font-family="Inter, sans-serif" font-weight="800" font-size="44" fill="#FFFFFF" letter-spacing="-1">
+      AI Innovation
+    </text>
+
+    <text x="0" y="145" font-family="Inter, sans-serif" font-weight="400" font-size="18" fill="#FFFFFF" fill-opacity="0.8">
+      <tspan x="0" dy="0">Build intelligent agents, LLM systems,</tspan>
+      <tspan x="0" dy="28">and solutions for real-world impact.</tspan>
+    </text>
+
+    <g transform="translate(0, 220)">
+      <text x="0" y="0" font-family="'DM Mono', monospace" font-size="13" fill="#9E90FF" font-weight="600">
+        NOV 15 – 17, 2026
+      </text>
+      <text x="170" y="0" font-family="'DM Mono', monospace" font-size="13" fill="#FFFFFF" fill-opacity="0.4">
+        • $15,000 PRIZE POOL
+      </text>
+    </g>
+  </g>
+</svg>

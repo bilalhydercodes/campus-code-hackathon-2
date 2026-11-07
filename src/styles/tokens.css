@@ -1,0 +1,47 @@
+/**
+ * CampusCode Master Design Tokens
+ * Source of truth: Master Design System & Approved Visual Reference
+ */
+
+:root {
+  /* Surfaces & Backgrounds */
+  --bg: #F7F7F4;
+  --surface: #FFFFFF;
+  --surface-soft: #F0F0EC;
+  --surface-purple: rgba(118, 101, 255, 0.06);
+  --surface-lime: rgba(168, 230, 46, 0.08);
+
+  /* Typography Colors */
+  --text: #111111;
+  --text-soft: #4F4F4B;
+  --text-muted: #71716D;
+
+  /* Borders & Dividers */
+  --border: #DEDED8;
+  --border-light: rgba(17, 17, 17, 0.08);
+  --border-purple: rgba(118, 101, 255, 0.22);
+  --border-lime: rgba(168, 230, 46, 0.35);
+
+  /* Brand Accents */
+  --purple: #7665FF;
+  --purple-hover: #6352F0;
+  --lime: #A8E62E;
+  --lime-dark: #82B91A;
+  --black: #111111;
+
+  /* Atmospheric Gradients */
+  --hero-gradient: radial-gradient(ellipse 70% 60% at 85% 15%, rgba(118, 101, 255, 0.16) 0%, transparent 60%),
+                   radial-gradient(ellipse 65% 55% at 10% 75%, rgba(168, 230, 46, 0.10) 0%, transparent 55%),
+                   #F7F7F4;
+  --cta-gradient: radial-gradient(ellipse 80% 80% at 90% 90%, rgba(118, 101, 255, 0.14) 0%, transparent 60%),
+                  radial-gradient(ellipse 70% 70% at 10% 10%, rgba(168, 230, 46, 0.10) 0%, transparent 55%),
+                  rgba(255, 255, 255, 0.6);
+
+  /* Typography Stacks */
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  /* Spacing & Layout */
+  --container-max: 1320px;
+  --container-inset: 44px;
+}

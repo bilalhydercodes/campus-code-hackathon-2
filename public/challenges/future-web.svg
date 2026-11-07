@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="webBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#0B1405"/>
+      <stop offset="100%" stopColor="#050902"/>
+    </linearGradient>
+    <linearGradient id="limeRibbonMain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#C9FB4D" />
+      <stop offset="40%" stopColor="#A8E62E" />
+      <stop offset="100%" stopColor="#6C9E10" />
+    </linearGradient>
+    <linearGradient id="limeRibbonSheen" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#F5FFD6" stopOpacity="0.95" />
+      <stop offset="50%" stopColor="#C5F756" stopOpacity="0.45" />
+      <stop offset="100%" stopColor="#6C9E10" stopOpacity="0" />
+    </linearGradient>
+    <radialGradient id="webGlow" cx="75%" cy="50%" r="55%">
+      <stop offset="0%" stopColor="#A8E62E" stopOpacity="0.3"/>
+      <stop offset="100%" stopColor="transparent"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="450" rx="20" fill="url(#webBg)"/>
+  <rect width="800" height="450" rx="20" fill="url(#webGlow)"/>
+
+  <!-- Right Graphic: 3D Volumetric Lime Silk Ribbon -->
+  <g transform="translate(500, 0)">
+    <path d="M40 0C110 100 230 150 160 280C110 370 190 400 320 450V0H40Z" fill="#5B870C" opacity="0.6"/>
+    <path d="M90 0C160 90 260 160 190 270C130 360 180 400 320 450V0H90Z" fill="url(#limeRibbonMain)"/>
+    <path d="M104 0C176 96 264 164 196 276C144 364 200 400 320 450" stroke="url(#limeRibbonSheen)" stroke-width="28" stroke-linecap="round"/>
+    <path d="M136 20C196 110 276 180 220 290" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- Left Content -->
+  <g transform="translate(60, 80)">
+    <rect width="130" height="32" rx="16" fill="#A8E62E" fill-opacity="0.2" stroke="#A8E62E" stroke-width="1.5"/>
+    <text x="22" y="21" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#C9FB4D" letter-spacing="1.5">OPEN TRACK</text>
+    <text x="150" y="21" font-family="'DM Mono', monospace" font-size="12" fill="#FFFFFF" fill-opacity="0.5">CC-FW26</text>
+
+    <text x="0" y="95" font-family="Inter, sans-serif" font-weight="800" font-size="44" fill="#FFFFFF" letter-spacing="-1">
+      Future Web
+    </text>
+
+    <text x="0" y="145" font-family="Inter, sans-serif" font-weight="400" font-size="18" fill="#FFFFFF" fill-opacity="0.8">
+      <tspan x="0" dy="0">Design and ship the next generation</tspan>
+      <tspan x="0" dy="28">of digital experiences and spatial interfaces.</tspan>
+    </text>
+
+    <g transform="translate(0, 220)">
+      <text x="0" y="0" font-family="'DM Mono', monospace" font-size="13" fill="#A8E62E" font-weight="600">
+        NOV 22 – 24, 2026
+      </text>
+      <text x="170" y="0" font-family="'DM Mono', monospace" font-size="13" fill="#FFFFFF" fill-opacity="0.4">
+        • $12,500 PRIZE POOL
+      </text>
+    </g>
+  </g>
+</svg>

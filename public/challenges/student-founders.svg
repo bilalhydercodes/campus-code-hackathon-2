@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="sfBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#161614"/>
+      <stop offset="100%" stopColor="#0A0A09"/>
+    </linearGradient>
+    <linearGradient id="prismGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#A8E62E"/>
+      <stop offset="50%" stopColor="#7665FF"/>
+      <stop offset="100%" stopColor="#4332D6"/>
+    </linearGradient>
+    <radialGradient id="sfGlow" cx="75%" cy="50%" r="55%">
+      <stop offset="0%" stopColor="#A8E62E" stopOpacity="0.2"/>
+      <stop offset="100%" stopColor="transparent"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="450" rx="20" fill="url(#sfBg)"/>
+  <rect width="800" height="450" rx="20" fill="url(#sfGlow)"/>
+
+  <!-- Graphic: Floating Prismatic Crystal -->
+  <g transform="translate(540, 100)" opacity="0.9">
+    <polygon points="120,20 220,100 120,240 20,100" fill="url(#prismGrad)" opacity="0.75"/>
+    <polygon points="120,20 220,100 120,150" fill="#E2DEFF" opacity="0.6"/>
+    <polygon points="20,100 120,20 120,150" fill="#A8E62E" opacity="0.5"/>
+    <polygon points="20,100 120,240 120,150" fill="#4332D6" opacity="0.8"/>
+    <polygon points="220,100 120,240 120,150" fill="#7665FF" opacity="0.7"/>
+  </g>
+
+  <!-- Left Content -->
+  <g transform="translate(60, 80)">
+    <rect width="145" height="32" rx="16" fill="#A8E62E" fill-opacity="0.15" stroke="#A8E62E" stroke-width="1.5"/>
+    <text x="20" y="21" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#A8E62E" letter-spacing="1.5">ACCELERATOR</text>
+    <text x="165" y="21" font-family="'DM Mono', monospace" font-size="12" fill="#FFFFFF" fill-opacity="0.5">CC-SF26</text>
+
+    <text x="0" y="95" font-family="Inter, sans-serif" font-weight="800" font-size="44" fill="#FFFFFF" letter-spacing="-1">
+      Student Founders
+    </text>
+
+    <text x="0" y="145" font-family="Inter, sans-serif" font-weight="400" font-size="18" fill="#FFFFFF" fill-opacity="0.8">
+      <tspan x="0" dy="0">Turn your hackathon prototype into a real</tspan>
+      <tspan x="0" dy="28">venture with mentorship, grants, and users.</tspan>
+    </text>
+
+    <g transform="translate(0, 220)">
+      <text x="0" y="0" font-family="'DM Mono', monospace" font-size="13" fill="#A8E62E" font-weight="600">
+        FOUNDER TRACK
+      </text>
+      <text x="160" y="0" font-family="'DM Mono', monospace" font-size="13" fill="#FFFFFF" fill-opacity="0.4">
+        • $50,000 SEED GRANTS
+      </text>
+    </g>
+  </g>
+</svg>

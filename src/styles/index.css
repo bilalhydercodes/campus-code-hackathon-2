@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap');
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-inter);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: rgba(118, 101, 255, 0.2);
+    color: #111111;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .slanted-card {
+    transform: skewX(-12deg);
+    border-radius: 8px;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  }
+
+  .slanted-card-content {
+    transform: skewX(12deg);
+  }
+
+  .slanted-tag {
+    transform: skewX(-14deg);
+    border-radius: 2px;
+  }
+
+  .slanted-tag-content {
+    transform: skewX(14deg);
+  }
+}
+
+@layer components {
+  .digital-id-screen {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url("/assets/Minimal Beige Doodle Pattern Background for digital card screen.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+  }
+
+  .digital-id-artwork {
+    display: block;
+    width: min(100%, 680px);
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    flex-shrink: 0;
+  }
+}

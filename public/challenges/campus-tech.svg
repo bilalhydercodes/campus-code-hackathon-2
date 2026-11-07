@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="ctBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#1C1B19"/>
+      <stop offset="100%" stopColor="#0E0D0C"/>
+    </linearGradient>
+    <linearGradient id="stairStep1" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stopColor="#7E7E77" />
+      <stop offset="100%" stopColor="#D9D8D2" />
+    </linearGradient>
+    <linearGradient id="stairStep2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#B3B3AC" />
+      <stop offset="100%" stopColor="#666660" />
+    </linearGradient>
+    <radialGradient id="spiralCenter" cx="80%" cy="85%" r="75%">
+      <stop offset="0%" stopColor="#FAF9F5" />
+      <stop offset="40%" stopColor="#D0CFCA" />
+      <stop offset="85%" stopColor="#7A7A73" />
+      <stop offset="100%" stopColor="#4A4A45" />
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="450" rx="20" fill="url(#ctBg)"/>
+
+  <!-- Right Graphic: Architectural Spiral Staircase Sweeps -->
+  <g transform="translate(480, 0)">
+    <path d="M60 0C120 80 240 140 280 260C310 350 320 400 320 450H0V0H60Z" fill="url(#spiralCenter)"/>
+    <path d="M80 0C140 90 260 160 290 290" stroke="url(#stairStep1)" stroke-width="24" stroke-linecap="round"/>
+    <path d="M110 0C170 100 280 180 304 320" stroke="#ffffff" stroke-opacity="0.45" stroke-width="6" stroke-linecap="round"/>
+    <path d="M120 20C176 116 276 196 300 330" stroke="url(#stairStep2)" stroke-width="20" stroke-linecap="round"/>
+    <ellipse cx="280" cy="350" rx="90" ry="70" fill="#3B3B36" opacity="0.9"/>
+  </g>
+
+  <!-- Left Content -->
+  <g transform="translate(60, 80)">
+    <rect width="130" height="32" rx="16" fill="#FFFFFF" fill-opacity="0.12" stroke="#FFFFFF" stroke-width="1.5" stroke-opacity="0.2"/>
+    <text x="22" y="21" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#E2E2DC" letter-spacing="1.5">UPCOMING</text>
+    <text x="150" y="21" font-family="'DM Mono', monospace" font-size="12" fill="#FFFFFF" fill-opacity="0.5">CC-CT26</text>
+
+    <text x="0" y="95" font-family="Inter, sans-serif" font-weight="800" font-size="44" fill="#FFFFFF" letter-spacing="-1">
+      Campus Tech
+    </text>
+
+    <text x="0" y="145" font-family="Inter, sans-serif" font-weight="400" font-size="18" fill="#FFFFFF" fill-opacity="0.8">
+      <tspan x="0" dy="0">Create technology that makes student life,</tspan>
+      <tspan x="0" dy="28">peer collaboration, and universities better.</tspan>
+    </text>
+
+    <g transform="translate(0, 220)">
+      <text x="0" y="0" font-family="'DM Mono', monospace" font-size="13" fill="#D9D8D2" font-weight="600">
+        DEC 01 – 03, 2026
+      </text>
+      <text x="170" y="0" font-family="'DM Mono', monospace" font-size="13" fill="#FFFFFF" fill-opacity="0.4">
+        • $10,000 PRIZE POOL
+      </text>
+    </g>
+  </g>
+</svg>
