@@ -27,6 +27,7 @@
     "@radix-ui/react-tooltip": "^1.4.1",
     "@types/three": "^0.187.0",
     "class-variance-authority": "^0.7.1",
+    "framer-motion": "^14.10.1",
     "lucide-react": "^1.16.0",
     "phosphor-react": "^1.4.1",
     "react": "^19.0.0",

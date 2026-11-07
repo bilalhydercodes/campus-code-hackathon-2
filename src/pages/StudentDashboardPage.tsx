@@ -9,6 +9,7 @@ import MyEventsView from '../components/dashboard/MyEventsView';
 import EventsView from '../components/dashboard/EventsView';
 import PlaceholderView from '../components/dashboard/PlaceholderView';
 import DigitalIdView from '../components/dashboard/DigitalIdView';
+import CertificatesView from '../components/dashboard/CertificatesView';
 import { SquaresFour, Trophy, CalendarCheck, CreditCard, List } from 'phosphor-react';
 
 export default function StudentDashboardPage() {
@@ -68,6 +69,9 @@ export default function StudentDashboardPage() {
       case 'Digital Card':
       case 'Digital ID':
         return <DigitalIdView />;
+      case 'Certificates':
+      case 'Achievements':
+        return <CertificatesView />;
       default:
         return <PlaceholderView title={activeTab} onNavigateTab={setActiveTab} />;
     }

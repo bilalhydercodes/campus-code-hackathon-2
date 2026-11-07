@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import StudentDashboardPage from './pages/StudentDashboardPage';
 import DigitalIdPage from './pages/DigitalIdPage';
+import CertificatesPage from './pages/CertificatesPage';
 
 export default function App() {
   return (
@@ -20,6 +21,8 @@ export default function App() {
           <Route path="/digital-card" element={<DigitalIdPage />} />
           <Route path="/id-card" element={<DigitalIdPage />} />
           <Route path="/id" element={<DigitalIdPage />} />
+          <Route path="/certificates" element={<CertificatesPage />} />
+          <Route path="/achievements" element={<CertificatesPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
