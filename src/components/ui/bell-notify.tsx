@@ -15,12 +15,14 @@ type BellNotifyProps = {
   rotationAmplitude?: number;
   /** Show/Hide CTA button under the bell. */
   showButton?: boolean;
-  /** CTA button text. */
+  /** CTA button text. Defaults to dynamic ON/OFF or 'Notify Me'. */
   buttonLabel?: string;
-  /** Click handler for CTA button. */
+  /** Click handler for CTA button. Defaults to toggling on/off. */
   onButtonClick?: () => void;
   /** Disable clicking the bell to toggle. */
   disableToggle?: boolean;
+  /** Show on/off switch toggle button directly on scene. Default true. */
+  showToggle?: boolean;
   /** Extra class on wrapper. */
   className?: string;
 };
@@ -32,9 +34,10 @@ function BellNotify({
   baseColor = '#b7b5b4',
   rotationAmplitude = 0.8,
   showButton = true,
-  buttonLabel = 'Notify Me',
+  buttonLabel,
   onButtonClick,
   disableToggle = false,
+  showToggle = true,
   className = '',
 }: BellNotifyProps) {
   // Uncontrolled fallback
@@ -64,8 +67,49 @@ function BellNotify({
     onToggle?.(next);
   }, [disableToggle, onState, isOn, onToggle]);
 
+  const handleCtaClick = useCallback(() => {
+    if (onButtonClick) {
+      onButtonClick();
+    } else {
+      handleToggle();
+    }
+  }, [onButtonClick, handleToggle]);
+
+  const displayButtonLabel =
+    buttonLabel ?? (onState ? 'Mute Notifications (OFF)' : 'Unmute Notifications (ON)');
+
   return (
     <div className={`bell-root ${className}`} style={rootStyle}>
+      {/* On/Off Switch Toggle Overlay Button */}
+      {showToggle && (
+        <div className="absolute top-4 left-4 z-30 flex items-center gap-2.5 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 select-none shadow-lg">
+          <span className="text-[11px] font-mono font-bold text-white tracking-wider flex items-center gap-1.5">
+            <span
+              className={`inline-block h-2 w-2 rounded-full ${
+                onState ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-500'
+              }`}
+            />
+            ALERTS: <strong className={onState ? 'text-emerald-400' : 'text-zinc-400'}>{onState ? 'ON' : 'OFF'}</strong>
+          </span>
+          <button
+            type="button"
+            onClick={handleToggle}
+            className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+              onState ? 'bg-emerald-500' : 'bg-zinc-700'
+            }`}
+            role="switch"
+            aria-checked={onState}
+            aria-label="Toggle notifications ON or OFF"
+          >
+            <span
+              className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                onState ? 'translate-x-4' : 'translate-x-0'
+              }`}
+            />
+          </button>
+        </div>
+      )}
+
       {/* Bell (acts like a button for accessibility) */}
       <div
         className={bellClass}
@@ -73,6 +117,7 @@ function BellNotify({
         aria-pressed={onState}
         tabIndex={0}
         onClick={handleToggle}
+        title={`Notification Bell is ${onState ? 'ON (Ringing)' : 'OFF (Muted)'} - Click to toggle`}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -118,9 +163,9 @@ function BellNotify({
         <button
           type="button"
           className={`button ${onState ? '' : 'hidden-button'}`}
-          onClick={onButtonClick}
+          onClick={handleCtaClick}
         >
-          {buttonLabel}
+          {displayButtonLabel}
         </button>
       )}
 

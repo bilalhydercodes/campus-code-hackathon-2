@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { mockNotifications, NotificationItem } from '../../data/notifications';
 import { BellNotify } from '../ui/bell-notify';
 import {
   Bell,
+  BellOff,
   RefreshCw,
   CheckCircle2,
   Calendar,
   Sparkles,
   Radio,
   Check,
-  ChevronRight
+  ChevronRight,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 interface NotificationsViewProps {
@@ -26,8 +29,30 @@ export default function NotificationsView({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showBellModal, setShowBellModal] = useState(false);
 
+  // Persistent ON/OFF State for notifications
+  const [isNotificationsOn, setIsNotificationsOn] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('campuscode_notifications_enabled');
+      return saved !== null ? JSON.parse(saved) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('campuscode_notifications_enabled', JSON.stringify(isNotificationsOn));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [isNotificationsOn]);
+
   const unreadCount = notifications.filter((n) => !n.is_read).length;
   const totalCount = notifications.length;
+
+  const handleToggleNotifications = () => {
+    setIsNotificationsOn((prev) => !prev);
+  };
 
   const handleMarkAsRead = (id: string) => {
     setNotifications((prev) =>
@@ -87,7 +112,7 @@ export default function NotificationsView({
         </div>
       </div>
 
-      {/* Main Header Card */}
+      {/* Main Header Card with ON/OFF Control */}
       <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white p-6 sm:p-8 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-6">
           <div>
@@ -100,7 +125,7 @@ export default function NotificationsView({
               <h1 className="text-3xl font-black tracking-tight text-gray-900 font-inter">
                 NOTIFICATIONS.
               </h1>
-              {unreadCount > 0 && (
+              {unreadCount > 0 && isNotificationsOn && (
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black text-xs font-black text-white shadow-xs">
                   {unreadCount}
                 </span>
@@ -111,24 +136,65 @@ export default function NotificationsView({
             </p>
           </div>
 
-          {/* 3D Bell Notify Animation Modal Trigger */}
-          <button
-            type="button"
-            onClick={() => setShowBellModal(true)}
-            className="flex items-center justify-center gap-2 rounded-lg border-[2px] border-black bg-white px-4 py-2.5 text-xs font-black text-black shadow-[3px_3px_0px_0px_#000] hover:bg-gray-50 transition-transform active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer self-start sm:self-center"
-          >
-            <Sparkles className="h-4 w-4 text-purple-600" />
-            <span>3D ALERT BELL</span>
-          </button>
+          {/* Action Controls: ON/OFF Button & 3D Bell Preview */}
+          <div className="flex flex-wrap items-center gap-3 self-start sm:self-center">
+            {/* ======================================================== */}
+            {/* DEDICATED ON/OFF BUTTON FOR NOTIFICATIONS                */}
+            {/* ======================================================== */}
+            <button
+              type="button"
+              onClick={handleToggleNotifications}
+              className={`flex items-center gap-2.5 rounded-lg border-[2px] border-black px-4 py-2 text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${
+                isNotificationsOn
+                  ? 'bg-emerald-500 text-white hover:bg-emerald-600'
+                  : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+              }`}
+              title={`Click to turn notifications ${isNotificationsOn ? 'OFF' : 'ON'}`}
+            >
+              {isNotificationsOn ? (
+                <>
+                  <Volume2 className="h-4 w-4 animate-bounce" />
+                  <span>NOTIFICATIONS: ON</span>
+                  <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
+                </>
+              ) : (
+                <>
+                  <VolumeX className="h-4 w-4 opacity-70" />
+                  <span>NOTIFICATIONS: OFF</span>
+                  <span className="h-2 w-2 rounded-full bg-zinc-400" />
+                </>
+              )}
+            </button>
+
+            {/* 3D Bell Notify Animation Modal Trigger */}
+            <button
+              type="button"
+              onClick={() => setShowBellModal(true)}
+              className="flex items-center justify-center gap-2 rounded-lg border-[2px] border-black bg-white px-4 py-2 text-xs font-black text-black shadow-[3px_3px_0px_0px_#000] hover:bg-gray-50 transition-transform active:translate-x-0.5 active:translate-y-0.5 active:shadow-none cursor-pointer"
+            >
+              <Sparkles className="h-4 w-4 text-purple-600" />
+              <span>3D ALERT BELL</span>
+            </button>
+          </div>
         </div>
 
         {/* Stats, Filters & Mark All Controls Bar */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3">
             {/* Live Data Badge */}
-            <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-800">
-              <Radio className="h-3.5 w-3.5 animate-pulse text-emerald-600" />
-              <span>02 LIVE DATA</span>
+            <div
+              className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-bold ${
+                isNotificationsOn
+                  ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+                  : 'border-zinc-200 bg-zinc-100 text-zinc-600'
+              }`}
+            >
+              <Radio
+                className={`h-3.5 w-3.5 ${
+                  isNotificationsOn ? 'animate-pulse text-emerald-600' : 'text-zinc-400'
+                }`}
+              />
+              <span>{isNotificationsOn ? '02 LIVE DATA' : 'NOTIFICATIONS MUTED'}</span>
             </div>
 
             {/* Filter Pills */}
@@ -159,7 +225,7 @@ export default function NotificationsView({
           </div>
 
           {/* Mark All As Read Button */}
-          {unreadCount > 0 && (
+          {unreadCount > 0 && isNotificationsOn && (
             <button
               type="button"
               onClick={handleMarkAllAsRead}
@@ -171,6 +237,28 @@ export default function NotificationsView({
           )}
         </div>
       </div>
+
+      {/* OFF Banner Notice if Notifications are turned OFF */}
+      {!isNotificationsOn && (
+        <div className="flex items-center justify-between rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <BellOff className="h-5 w-5 text-amber-600 shrink-0" />
+            <div>
+              <p className="text-sm font-bold">Notifications are currently turned OFF</p>
+              <p className="text-xs text-amber-700">
+                Live alerts and sound pings are muted. Click the "NOTIFICATIONS: OFF" button above to turn them back ON.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleToggleNotifications}
+            className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-amber-700 transition-colors cursor-pointer shrink-0"
+          >
+            Turn ON
+          </button>
+        </div>
+      )}
 
       {/* Notifications Cards Feed */}
       <div className="space-y-4">
@@ -200,7 +288,7 @@ export default function NotificationsView({
                     <h2 className="text-lg font-black tracking-tight text-gray-900">
                       {notif.title}
                     </h2>
-                    {!notif.is_read && (
+                    {!notif.is_read && isNotificationsOn && (
                       <span className="flex h-2 w-2 rounded-full bg-purple-600 animate-pulse" />
                     )}
                   </div>
@@ -234,21 +322,27 @@ export default function NotificationsView({
         )}
       </div>
 
-      {/* 3D Bell Notify Overlay Modal */}
+      {/* 3D Bell Notify Overlay Modal with Controlled On/Off Toggle */}
       {showBellModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-4 animate-in fade-in duration-200">
-          <div className="relative flex flex-col items-center justify-center w-full max-w-lg h-[580px] rounded-2xl bg-black border border-white/10 p-6 overflow-hidden shadow-2xl">
+          <div className="relative flex flex-col items-center justify-center w-full max-w-lg h-[600px] rounded-2xl bg-black border border-white/10 p-6 overflow-hidden shadow-2xl">
             <button
               type="button"
               onClick={() => setShowBellModal(false)}
-              className="absolute top-4 right-4 z-50 text-white/70 hover:text-white font-mono text-xs font-bold uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full cursor-pointer"
+              className="absolute top-4 right-4 z-50 text-white/70 hover:text-white font-mono text-xs font-bold uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full cursor-pointer hover:bg-white/20 transition-colors"
             >
               Close ✕
             </button>
 
-            {/* Render 3D Bell Notify Component */}
+            {/* Controlled 3D Bell Notify Component */}
             <div className="w-full h-full flex items-center justify-center">
-              <BellNotify size={420} buttonLabel="Ring Alerts" />
+              <BellNotify
+                isOn={isNotificationsOn}
+                onToggle={setIsNotificationsOn}
+                size={420}
+                showToggle={true}
+                buttonLabel={isNotificationsOn ? 'Mute Alerts (OFF)' : 'Unmute Alerts (ON)'}
+              />
             </div>
           </div>
         </div>
