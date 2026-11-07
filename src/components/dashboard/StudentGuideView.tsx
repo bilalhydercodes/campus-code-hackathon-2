@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { 
@@ -12,10 +11,8 @@ import {
   CheckCircle2, 
   XCircle, 
   HelpCircle,
-  Code2,
   X,
   BookOpen,
-  Sparkles
 } from "lucide-react";
 
 // Content mapped from the ELP / CAMPUSCODE GUIDE
@@ -179,25 +176,7 @@ const pageFlipVariants = {
   }),
 };
 
-// Book cover swing animation
-const bookCoverVariants = {
-  closed: { 
-    rotateY: 0, 
-    opacity: 1,
-    pointerEvents: "auto" as const,
-  },
-  open: { 
-    rotateY: -110, 
-    opacity: 0,
-    pointerEvents: "none" as const,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  },
-};
-
-export function StudentGuideBook() {
+export default function StudentGuideView() {
   const [isBookOpen, setIsBookOpen] = useState(false);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [direction, setDirection] = useState(0); 
@@ -211,174 +190,307 @@ export function StudentGuideBook() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto select-none">
-      {/* Header outside the book */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#7665FF]/10 text-[#7665FF] border border-[#7665FF]/20 shadow-xs">
-            <FileText className="h-6 w-6" />
-          </div>
-          <div>
-            <h1 className="font-inter text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Student Guide</h1>
-            <p className="text-sm text-gray-500">Everything you need to navigate CampusCode</p>
-          </div>
-        </div>
-        
-        {/* Quick controls outside the book */}
-        <div className="flex items-center gap-2">
-          {isBookOpen ? (
-            <button 
-              type="button"
-              onClick={() => setIsBookOpen(false)}
-              className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 shadow-xs transition-all hover:bg-gray-50 cursor-pointer"
-            >
-              <X className="h-4 w-4" /> Close Book
-            </button>
-          ) : (
-            <button 
-              type="button"
-              onClick={() => setIsBookOpen(true)}
-              className="flex items-center gap-2 rounded-full bg-[#111111] px-5 py-2 text-xs font-semibold text-white shadow-xs transition-all hover:bg-neutral-800 cursor-pointer"
-            >
-              <BookOpen className="h-4 w-4" /> Open Guide
-            </button>
-          )}
-        </div>
+    <div className="w-full max-w-5xl mx-auto select-none py-2">
+      {/* Title & Subtitle matching the screenshot */}
+      <div className="text-center mb-8 space-y-1.5">
+        <h1 className="font-inter text-3xl sm:text-[38px] font-bold text-[#111111] tracking-tight">
+          Student Guide
+        </h1>
+        <p className="font-inter text-sm sm:text-[15px] text-[#71716D]">
+          Everything you need to navigate CampusCode
+        </p>
       </div>
 
-      {/* The 3D Book Container */}
-      <div 
-        className="relative flex min-h-[620px] w-full rounded-2xl shadow-xl ring-1 ring-gray-200 bg-[#F7F7F4]"
-        style={{ perspective: "1500px" }}
-      >
-        
-        {/* ========================================= */}
-        {/* THE COVER: Sits on top, swings left to open */}
-        {/* ========================================= */}
+      {!isBookOpen ? (
+        /* ============================================================ */
+        /* CLOSED STATE: The Realistic 3D Hardcover Book Object          */
+        /* Matches screenshot 1-to-1                                    */
+        /* ============================================================ */
+        <div className="flex flex-col items-center justify-center py-4">
+          <motion.div
+            initial={{ y: 0 }}
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+            whileHover={{ scale: 1.02, rotate: -1.2, y: -12 }}
+            onClick={() => setIsBookOpen(true)}
+            className="group relative cursor-pointer select-none"
+            title="Click to Open Playbook"
+          >
+            {/* Soft ground drop shadow underneath */}
+            <div className="absolute -bottom-8 left-6 right-6 h-10 rounded-[50%] bg-black/25 blur-xl group-hover:scale-105 group-hover:opacity-60 transition-all duration-300" />
+
+            {/* Book Object Container */}
+            <div className="relative w-[310px] sm:w-[350px] md:w-[370px] h-[450px] sm:h-[490px] md:h-[515px] rounded-r-[26px] rounded-l-[10px] bg-[#16171D] shadow-[0_25px_50px_rgba(0,0,0,0.35)] transition-all duration-300">
+              
+              {/* --- 1. Realistic Page Block (Bottom & Right White/Silver Pages) --- */}
+              {/* Bottom Paper Block */}
+              <div 
+                className="absolute -bottom-[9px] left-[26px] right-[2px] h-[10px] rounded-br-[16px] border-b border-r border-[#999999]/40"
+                style={{
+                  background: "linear-gradient(to bottom, #d0d0cc 0%, #f7f7f4 35%, #ffffff 70%, #b8b8b3 100%)",
+                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.8), 0 4px 6px rgba(0,0,0,0.2)"
+                }}
+              />
+              {/* Right Paper Edge Block */}
+              <div 
+                className="absolute top-[8px] -right-[8px] bottom-[3px] w-[9px] rounded-tr-[14px] rounded-br-[8px] border-r border-t border-[#999999]/40"
+                style={{
+                  background: "linear-gradient(to right, #cfcfca 0%, #ffffff 50%, #b0b0a8 100%)",
+                  boxShadow: "inset 1px 0 2px rgba(255,255,255,0.8)"
+                }}
+              />
+
+              {/* --- 2. Hardcover Front Face --- */}
+              <div className="relative w-full h-full rounded-r-[24px] rounded-l-[8px] overflow-hidden bg-[#18191E] border border-white/10 flex flex-col justify-between p-6 sm:p-7 shadow-inner">
+                
+                {/* SVG Diagonal Geometric Shards in CampusCode Purple & Lime (Matching Screenshot) */}
+                <svg
+                  className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                  viewBox="0 0 370 515"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  preserveAspectRatio="none"
+                >
+                  {/* Top-left to bottom-right Angular Geometric Bands */}
+                  {/* Band 1: Lime shard top-left */}
+                  <polygon points="-20,160 120,40 180,60 10,-20 -20,-20" fill="#A8E62E" opacity="0.95" />
+                  
+                  {/* Band 2: Deep purple large angular diagonal stroke */}
+                  <polygon points="-20,240 240,60 380,140 280,240 30,370 -20,330" fill="#5F4BFF" opacity="0.9" />
+
+                  {/* Band 3: Foreground vibrant purple stripe */}
+                  <polygon points="-20,410 80,340 390,140 390,210 130,410 -20,450" fill="#7665FF" opacity="0.98" />
+
+                  {/* Band 4: Vibrant Electric Lime accent shards */}
+                  <polygon points="-20,480 60,430 180,360 160,330 -20,410" fill="#A8E62E" opacity="0.95" />
+                  
+                  {/* Band 5: Bottom-right purple and lime shards */}
+                  <polygon points="260,535 390,430 390,480 320,535" fill="#7665FF" opacity="0.9" />
+                  <polygon points="320,535 390,480 390,535" fill="#A8E62E" opacity="0.95" />
+                  <polygon points="340,320 390,280 390,360" fill="#A8E62E" opacity="0.9" />
+
+                  {/* Soft atmospheric gradient layer for book sheen */}
+                  <rect width="370" height="515" fill="url(#coverSheen)" opacity="0.3" />
+                  
+                  <defs>
+                    <linearGradient id="coverSheen" x1="0" y1="0" x2="370" y2="515" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="white" stopOpacity="0.15" />
+                      <stop offset="0.4" stopColor="white" stopOpacity="0.0" />
+                      <stop offset="0.8" stopColor="black" stopOpacity="0.3" />
+                      <stop offset="1" stopColor="black" stopOpacity="0.6" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+
+                {/* --- Cover Header: CampusCode Logo & STUDENT PLAYBOOK --- */}
+                <div className="relative z-10 flex flex-col items-center pt-2">
+                  {/* Logo + 3 Colored Slashes in top right */}
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-inter font-black text-2xl sm:text-[26px] text-white tracking-tight">
+                      CampusCode
+                    </span>
+                    {/* Three Slashes Asset / Graphic */}
+                    <div className="flex items-center gap-0.5 ml-0.5 transform -skew-x-[20deg] select-none">
+                      <span className="w-1.5 h-4 bg-white/80 rounded-xs inline-block" />
+                      <span className="w-1.5 h-4 bg-[#7665FF] rounded-xs inline-block" />
+                      <span className="w-1.5 h-4 bg-[#A8E62E] rounded-xs inline-block" />
+                    </div>
+                  </div>
+
+                  <p className="font-mono text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.22em] text-white/80 mt-1">
+                    STUDENT PLAYBOOK
+                  </p>
+                </div>
+
+                {/* --- Cover Center: Metallic Gold-Bordered CampusCode Shield --- */}
+                <div className="relative z-10 flex items-center justify-center my-auto py-4">
+                  <div className="relative filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300">
+                    <svg width="125" height="145" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      {/* Shield Outer Shadow */}
+                      <path
+                        d="M60 6 C92 6 112 12 112 36 C112 85 60 134 60 134 C60 134 8 85 8 36 C8 12 28 6 60 6 Z"
+                        fill="#0c0d12"
+                      />
+                      {/* Gold / Champagne Metallic Bevel Border */}
+                      <path
+                        d="M60 6 C92 6 112 12 112 36 C112 85 60 134 60 134 C60 134 8 85 8 36 C8 12 28 6 60 6 Z"
+                        stroke="url(#shieldGoldStroke)"
+                        strokeWidth="6"
+                        strokeLinejoin="round"
+                      />
+                      {/* Shield Inner Dark Surface */}
+                      <path
+                        d="M60 13 C88 13 104 18 104 38 C104 80 60 124 60 124 C60 124 16 80 16 38 C16 18 32 13 60 13 Z"
+                        fill="#121318"
+                      />
+                      {/* Inner fine hairline border */}
+                      <path
+                        d="M60 16 C85 16 100 20 100 39 C100 78 60 120 60 120 C60 120 20 78 20 39 C20 20 35 16 60 16 Z"
+                        stroke="rgba(255,255,255,0.12)"
+                        strokeWidth="1.5"
+                      />
+
+                      {/* Inside Shield: Three Iconic CampusCode Diagonal Slashes */}
+                      <g transform="translate(60, 68) skewX(-20) translate(-60, -68)">
+                        {/* 1. Black / Dark Ink Slash */}
+                        <path d="M42 36 L52 36 L34 102 L24 102 Z" fill="#1C1D24" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
+                        {/* 2. CampusCode Purple Slash */}
+                        <path d="M57 34 L68 34 L49 104 L38 104 Z" fill="#7665FF" />
+                        {/* 3. Electric Lime Slash */}
+                        <path d="M73 34 L85 34 L66 104 L54 104 Z" fill="#A8E62E" />
+                      </g>
+
+                      {/* Shield Metallic Gradients */}
+                      <defs>
+                        <linearGradient id="shieldGoldStroke" x1="10" y1="10" x2="110" y2="135" gradientUnits="userSpaceOnUse">
+                          <stop stopColor="#F5E3A9" />
+                          <stop offset="0.25" stopColor="#D4AF37" />
+                          <stop offset="0.5" stopColor="#FFF2C2" />
+                          <stop offset="0.75" stopColor="#B8860B" />
+                          <stop offset="1" stopColor="#E6C875" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                </div>
+
+                {/* --- Cover Footer: Click to Open Playbook --- */}
+                <div className="relative z-10 flex flex-col items-center text-center pb-2 space-y-1">
+                  <h3 className="font-inter text-base sm:text-[18px] font-bold text-white tracking-wide group-hover:text-[#A8E62E] transition-colors">
+                    Click to Open Playbook
+                  </h3>
+                  <p className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#A8E62E] uppercase">
+                    JOIN. BUILD. SUBMIT. ADVANCE.
+                  </p>
+                </div>
+
+                {/* --- 3. Spine Binding Overlay (Left Edge Realistic Emboss) --- */}
+                <div 
+                  className="pointer-events-none absolute left-0 top-0 bottom-0 w-[24px]"
+                  style={{
+                    background: "linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(255,255,255,0.12) 20%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.1) 85%, transparent 100%)",
+                    borderRight: "1px solid rgba(0,0,0,0.4)"
+                  }}
+                />
+                {/* Vertical crease shadow representing the hinge */}
+                <div className="pointer-events-none absolute left-[23px] top-0 bottom-0 w-[3px] bg-black/40 shadow-sm" />
+
+                {/* Cover Gloss Sheen across top edge */}
+                <div className="pointer-events-none absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      ) : (
+        /* ============================================================ */
+        /* OPEN STATE: The 3D Reading Book Interior                      */
+        /* ============================================================ */
         <motion.div
-          variants={bookCoverVariants}
-          initial="closed"
-          animate={isBookOpen ? "open" : "closed"}
-          style={{ transformOrigin: "left center" }}
-          onClick={() => setIsBookOpen(true)}
-          className="absolute inset-0 z-50 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c0d19] via-[#1a1538] to-[#0c0d19] border border-purple-500/30 shadow-2xl transition-transform"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="space-y-4"
         >
-          {/* Decorative Cover Binding (Left Edge) */}
-          <div className="absolute left-0 top-0 bottom-0 w-12 bg-black/40 border-r border-white/5" />
-          
-          {/* Gold / Purple Trim Accents */}
-          <div className="absolute top-6 left-16 right-6 h-px bg-gradient-to-r from-transparent via-[#7665FF]/40 to-transparent" />
-          <div className="absolute bottom-6 left-16 right-6 h-px bg-gradient-to-r from-transparent via-[#7665FF]/40 to-transparent" />
+          {/* Header Action Bar */}
+          <div className="flex items-center justify-between pb-2">
+            <button
+              type="button"
+              onClick={() => setIsBookOpen(false)}
+              className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 transition-all cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+              <span>Close Playbook</span>
+            </button>
 
-          <div className="flex flex-col items-center justify-center relative z-10 text-center px-6">
-            <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-white/5 border border-white/10 shadow-[0_0_30px_rgba(118,101,255,0.2)] backdrop-blur-md">
-              <Code2 className="h-12 w-12 text-[#A8E62E]" />
-            </div>
-            <h2 className="font-inter text-4xl sm:text-5xl font-black tracking-tight text-white mb-2">CampusCode</h2>
-            <p className="font-mono text-sm sm:text-base font-semibold uppercase tracking-[0.25em] text-[#7665FF]">
-              Student Official Playbook
-            </p>
-            
-            <div className="mt-10 inline-flex items-center gap-2 rounded-full border border-purple-400/40 bg-[#7665FF]/20 px-6 py-2.5 text-xs font-semibold text-purple-200 backdrop-blur-md transition-all hover:bg-[#7665FF]/30 hover:scale-105 shadow-lg">
-              <Sparkles className="w-3.5 h-3.5 text-[#A8E62E]" />
-              <span>Click to Open Guide</span>
-            </div>
+            <span className="font-mono text-xs text-[#7665FF] font-semibold bg-[#7665FF]/10 px-3 py-1 rounded-full border border-[#7665FF]/20">
+              Interactive 3D Reader
+            </span>
           </div>
-          
-          {/* Soft interior cover shadow gradient */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-black/50 pointer-events-none" />
-        </motion.div>
 
+          {/* Book Spread Container */}
+          <div 
+            className="relative flex flex-col md:flex-row min-h-[620px] w-full rounded-2xl bg-white shadow-xl ring-1 ring-gray-200 overflow-hidden"
+            style={{ perspective: "1500px" }}
+          >
+            {/* Spine Center Divider */}
+            <div className="hidden md:block absolute left-1/3 top-0 bottom-0 w-8 -ml-4 z-20 bg-gradient-to-r from-transparent via-gray-200/80 to-transparent shadow-[inset_0_0_15px_rgba(0,0,0,0.05)] border-x border-gray-200/50" />
 
-        {/* ========================================= */}
-        {/* THE INTERIOR: Visible when cover opens */}
-        {/* ========================================= */}
-        <div className="relative flex w-full flex-col md:flex-row bg-white rounded-2xl overflow-hidden shadow-inner">
-          
-          {/* Book Spine (Divider) */}
-          <div className="hidden md:block absolute left-1/3 top-0 bottom-0 w-8 -ml-4 z-10 bg-gradient-to-r from-transparent via-gray-200/80 to-transparent shadow-[inset_0_0_15px_rgba(0,0,0,0.05)] border-x border-gray-200/50" />
-
-          {/* LEFT PAGE: Table of Contents */}
-          <div className="w-full md:w-1/3 bg-[#FAFAF8] p-6 md:p-8 flex flex-col border-b md:border-b-0 md:border-r border-gray-200 relative z-20">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2 text-gray-900">
+            {/* Left Page: Chapters Navigation */}
+            <div className="w-full md:w-1/3 bg-[#FAFAF8] p-6 sm:p-8 flex flex-col border-b md:border-b-0 md:border-r border-gray-200 relative z-10">
+              <div className="flex items-center gap-2 mb-6 text-gray-900">
                 <Bookmark className="h-5 w-5 text-[#7665FF]" />
                 <h3 className="font-inter font-bold text-lg tracking-tight">Chapters</h3>
               </div>
+              
+              <nav className="flex flex-col gap-2 flex-1">
+                {guidePages.map((page, index) => {
+                  const isActive = index === currentPageIndex;
+                  return (
+                    <button
+                      key={page.id}
+                      type="button"
+                      onClick={() => handlePageChange(index)}
+                      className={cn(
+                        "group flex items-center justify-between w-full p-3.5 rounded-xl transition-all duration-200 text-left cursor-pointer",
+                        isActive 
+                          ? "bg-white shadow-sm ring-1 ring-gray-200 text-[#7665FF] font-semibold" 
+                          : "hover:bg-gray-100/80 text-gray-600 hover:text-gray-900"
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className={cn(
+                          "transition-colors",
+                          isActive ? "text-[#7665FF]" : "text-gray-400 group-hover:text-gray-600"
+                        )}>
+                          {page.icon}
+                        </span>
+                        <span className="font-medium text-sm">{page.title}</span>
+                      </div>
+                      {isActive && (
+                        <ChevronRight className="h-4 w-4 text-[#7665FF]" />
+                      )}
+                    </button>
+                  );
+                })}
+              </nav>
+
+              <div className="mt-8 text-center text-xs text-gray-400 font-mono">
+                Chapter {currentPageIndex + 1} of {guidePages.length}
+              </div>
             </div>
-            
-            <nav className="flex flex-col gap-2 flex-1">
-              {guidePages.map((page, index) => {
-                const isActive = index === currentPageIndex;
-                return (
-                  <button
-                    key={page.id}
-                    type="button"
-                    onClick={() => handlePageChange(index)}
-                    className={cn(
-                      "group flex items-center justify-between w-full p-3.5 rounded-xl transition-all duration-200 text-left cursor-pointer",
-                      isActive 
-                        ? "bg-white shadow-sm ring-1 ring-gray-200/80 text-[#7665FF] font-semibold" 
-                        : "hover:bg-gray-100/80 text-gray-600 hover:text-gray-900"
-                    )}
+
+            {/* Right Page: Content Area with 3D Page Turn Animation */}
+            <div className="w-full md:w-2/3 bg-white relative overflow-hidden flex flex-col z-10">
+              <div className="flex-1 relative h-full w-full min-h-[520px]">
+                <AnimatePresence mode="wait" custom={direction} initial={false}>
+                  <motion.div
+                    key={currentPageIndex}
+                    custom={direction}
+                    variants={pageFlipVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    style={{ transformOrigin: "left center" }} 
+                    className="absolute inset-0 bg-white p-6 sm:p-8 md:p-10 overflow-y-auto"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className={cn(
-                        "transition-colors",
-                        isActive ? "text-[#7665FF]" : "text-gray-400 group-hover:text-gray-600"
-                      )}>
-                        {page.icon}
-                      </span>
-                      <span className="font-medium text-sm">{page.title}</span>
+                    <div className="inline-block rounded-full bg-[#7665FF]/10 border border-[#7665FF]/20 px-3 py-1 font-mono text-[10.5px] font-bold uppercase tracking-wider text-[#7665FF] mb-6">
+                      Chapter {currentPageIndex + 1} · {activePage.title}
                     </div>
-                    {isActive && (
-                      <ChevronRight className="h-4 w-4 text-[#7665FF]" />
-                    )}
-                  </button>
-                );
-              })}
-            </nav>
+                    
+                    {activePage.content}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
 
-            <div className="mt-8 text-center text-xs text-gray-400 font-mono">
-              Chapter {currentPageIndex + 1} of {guidePages.length}
+              {/* Bottom footer */}
+              <div className="border-t border-gray-100 px-8 py-3.5 flex items-center justify-between text-xs text-gray-400 font-mono bg-white z-20">
+                <span>CampusCode Official Student Guide</span>
+                <span>Page {currentPageIndex + 1} of {guidePages.length}</span>
+              </div>
             </div>
           </div>
-
-          {/* RIGHT PAGE: Content Area with 3D Page Turn */}
-          <div className="w-full md:w-2/3 bg-white relative overflow-hidden flex flex-col z-10">
-            <div className="flex-1 relative h-full w-full min-h-[500px]">
-              <AnimatePresence mode="wait" custom={direction} initial={false}>
-                <motion.div
-                  key={currentPageIndex}
-                  custom={direction}
-                  variants={pageFlipVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  style={{ transformOrigin: "left center" }} 
-                  className="absolute inset-0 bg-white p-6 sm:p-8 md:p-10 overflow-y-auto border-l border-gray-100"
-                >
-                  <div className="inline-block rounded-full bg-[#7665FF]/10 border border-[#7665FF]/20 px-3 py-1 font-mono text-[10.5px] font-bold uppercase tracking-wider text-[#7665FF] mb-6">
-                    Chapter {currentPageIndex + 1} · {activePage.title}
-                  </div>
-                  
-                  {activePage.content}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Bottom page number footer */}
-            <div className="border-t border-gray-100 px-8 py-3 flex items-center justify-between text-xs text-gray-400 font-mono bg-white z-20">
-              <span>CampusCode Official Student Guide</span>
-              <span>Page {currentPageIndex + 1} of {guidePages.length}</span>
-            </div>
-          </div>
-        </div>
-        {/* End of Interior */}
-
-      </div>
+        </motion.div>
+      )}
     </div>
   );
 }
-
-export default StudentGuideBook;
