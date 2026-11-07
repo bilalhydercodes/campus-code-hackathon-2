@@ -11,6 +11,7 @@ import PlaceholderView from '../components/dashboard/PlaceholderView';
 import DigitalIdView from '../components/dashboard/DigitalIdView';
 import CertificatesView from '../components/dashboard/CertificatesView';
 import StudentGuideView from '../components/dashboard/StudentGuideView';
+import ProfileView from '../components/dashboard/ProfileView';
 import { SquaresFour, Trophy, CalendarCheck, CreditCard, List } from 'phosphor-react';
 
 export default function StudentDashboardPage() {
@@ -77,6 +78,8 @@ export default function StudentDashboardPage() {
       case 'Guide':
       case 'Playbook':
         return <StudentGuideView />;
+      case 'Profile':
+        return <ProfileView user={user} />;
       default:
         return <PlaceholderView title={activeTab} onNavigateTab={setActiveTab} />;
     }
