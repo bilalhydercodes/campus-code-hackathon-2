@@ -217,167 +217,19 @@ export default function StudentGuideView() {
             title="Click to Open Playbook"
           >
             {/* Soft ground drop shadow underneath */}
-            <div className="absolute -bottom-8 left-6 right-6 h-10 rounded-[50%] bg-black/25 blur-xl group-hover:scale-105 group-hover:opacity-60 transition-all duration-300" />
+            <div className="absolute -bottom-8 left-8 right-8 h-12 rounded-[50%] bg-black/35 blur-2xl group-hover:scale-105 group-hover:opacity-75 transition-all duration-300" />
 
-            {/* Book Object Container */}
-            <div className="relative w-[310px] sm:w-[350px] md:w-[370px] h-[450px] sm:h-[490px] md:h-[515px] rounded-r-[26px] rounded-l-[10px] bg-[#16171D] shadow-[0_25px_50px_rgba(0,0,0,0.35)] transition-all duration-300">
-              
-              {/* --- 1. Realistic Page Block (Bottom & Right White/Silver Pages) --- */}
-              {/* Bottom Paper Block */}
-              <div 
-                className="absolute -bottom-[9px] left-[26px] right-[2px] h-[10px] rounded-br-[16px] border-b border-r border-[#999999]/40"
-                style={{
-                  background: "linear-gradient(to bottom, #d0d0cc 0%, #f7f7f4 35%, #ffffff 70%, #b8b8b3 100%)",
-                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.8), 0 4px 6px rgba(0,0,0,0.2)"
-                }}
-              />
-              {/* Right Paper Edge Block */}
-              <div 
-                className="absolute top-[8px] -right-[8px] bottom-[3px] w-[9px] rounded-tr-[14px] rounded-br-[8px] border-r border-t border-[#999999]/40"
-                style={{
-                  background: "linear-gradient(to right, #cfcfca 0%, #ffffff 50%, #b0b0a8 100%)",
-                  boxShadow: "inset 1px 0 2px rgba(255,255,255,0.8)"
-                }}
+            {/* Exact Hardcover Book Graphic */}
+            <div className="relative w-[300px] sm:w-[350px] md:w-[380px] drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)] transition-all duration-300">
+              <img
+                src="/assets/student-playbook-cover.png"
+                alt="CampusCode Student Playbook - Click to Open"
+                className="w-full h-auto block select-none rounded-[22px] sm:rounded-[26px]"
+                draggable={false}
               />
 
-              {/* --- 2. Hardcover Front Face --- */}
-              <div className="relative w-full h-full rounded-r-[24px] rounded-l-[8px] overflow-hidden bg-[#18191E] border border-white/10 flex flex-col justify-between p-6 sm:p-7 shadow-inner">
-                
-                {/* SVG Diagonal Geometric Shards in CampusCode Purple & Lime (Matching Screenshot) */}
-                <svg
-                  className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-                  viewBox="0 0 370 515"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  preserveAspectRatio="none"
-                >
-                  {/* Top-left to bottom-right Angular Geometric Bands */}
-                  {/* Band 1: Lime shard top-left */}
-                  <polygon points="-20,160 120,40 180,60 10,-20 -20,-20" fill="#A8E62E" opacity="0.95" />
-                  
-                  {/* Band 2: Deep purple large angular diagonal stroke */}
-                  <polygon points="-20,240 240,60 380,140 280,240 30,370 -20,330" fill="#5F4BFF" opacity="0.9" />
-
-                  {/* Band 3: Foreground vibrant purple stripe */}
-                  <polygon points="-20,410 80,340 390,140 390,210 130,410 -20,450" fill="#7665FF" opacity="0.98" />
-
-                  {/* Band 4: Vibrant Electric Lime accent shards */}
-                  <polygon points="-20,480 60,430 180,360 160,330 -20,410" fill="#A8E62E" opacity="0.95" />
-                  
-                  {/* Band 5: Bottom-right purple and lime shards */}
-                  <polygon points="260,535 390,430 390,480 320,535" fill="#7665FF" opacity="0.9" />
-                  <polygon points="320,535 390,480 390,535" fill="#A8E62E" opacity="0.95" />
-                  <polygon points="340,320 390,280 390,360" fill="#A8E62E" opacity="0.9" />
-
-                  {/* Soft atmospheric gradient layer for book sheen */}
-                  <rect width="370" height="515" fill="url(#coverSheen)" opacity="0.3" />
-                  
-                  <defs>
-                    <linearGradient id="coverSheen" x1="0" y1="0" x2="370" y2="515" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="white" stopOpacity="0.15" />
-                      <stop offset="0.4" stopColor="white" stopOpacity="0.0" />
-                      <stop offset="0.8" stopColor="black" stopOpacity="0.3" />
-                      <stop offset="1" stopColor="black" stopOpacity="0.6" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-
-                {/* --- Cover Header: CampusCode Logo & STUDENT PLAYBOOK --- */}
-                <div className="relative z-10 flex flex-col items-center pt-2">
-                  {/* Logo + 3 Colored Slashes in top right */}
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-inter font-black text-2xl sm:text-[26px] text-white tracking-tight">
-                      CampusCode
-                    </span>
-                    {/* Three Slashes Asset / Graphic */}
-                    <div className="flex items-center gap-0.5 ml-0.5 transform -skew-x-[20deg] select-none">
-                      <span className="w-1.5 h-4 bg-white/80 rounded-xs inline-block" />
-                      <span className="w-1.5 h-4 bg-[#7665FF] rounded-xs inline-block" />
-                      <span className="w-1.5 h-4 bg-[#A8E62E] rounded-xs inline-block" />
-                    </div>
-                  </div>
-
-                  <p className="font-mono text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.22em] text-white/80 mt-1">
-                    STUDENT PLAYBOOK
-                  </p>
-                </div>
-
-                {/* --- Cover Center: Metallic Gold-Bordered CampusCode Shield --- */}
-                <div className="relative z-10 flex items-center justify-center my-auto py-4">
-                  <div className="relative filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-300">
-                    <svg width="125" height="145" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      {/* Shield Outer Shadow */}
-                      <path
-                        d="M60 6 C92 6 112 12 112 36 C112 85 60 134 60 134 C60 134 8 85 8 36 C8 12 28 6 60 6 Z"
-                        fill="#0c0d12"
-                      />
-                      {/* Gold / Champagne Metallic Bevel Border */}
-                      <path
-                        d="M60 6 C92 6 112 12 112 36 C112 85 60 134 60 134 C60 134 8 85 8 36 C8 12 28 6 60 6 Z"
-                        stroke="url(#shieldGoldStroke)"
-                        strokeWidth="6"
-                        strokeLinejoin="round"
-                      />
-                      {/* Shield Inner Dark Surface */}
-                      <path
-                        d="M60 13 C88 13 104 18 104 38 C104 80 60 124 60 124 C60 124 16 80 16 38 C16 18 32 13 60 13 Z"
-                        fill="#121318"
-                      />
-                      {/* Inner fine hairline border */}
-                      <path
-                        d="M60 16 C85 16 100 20 100 39 C100 78 60 120 60 120 C60 120 20 78 20 39 C20 20 35 16 60 16 Z"
-                        stroke="rgba(255,255,255,0.12)"
-                        strokeWidth="1.5"
-                      />
-
-                      {/* Inside Shield: Three Iconic CampusCode Diagonal Slashes */}
-                      <g transform="translate(60, 68) skewX(-20) translate(-60, -68)">
-                        {/* 1. Black / Dark Ink Slash */}
-                        <path d="M42 36 L52 36 L34 102 L24 102 Z" fill="#1C1D24" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
-                        {/* 2. CampusCode Purple Slash */}
-                        <path d="M57 34 L68 34 L49 104 L38 104 Z" fill="#7665FF" />
-                        {/* 3. Electric Lime Slash */}
-                        <path d="M73 34 L85 34 L66 104 L54 104 Z" fill="#A8E62E" />
-                      </g>
-
-                      {/* Shield Metallic Gradients */}
-                      <defs>
-                        <linearGradient id="shieldGoldStroke" x1="10" y1="10" x2="110" y2="135" gradientUnits="userSpaceOnUse">
-                          <stop stopColor="#F5E3A9" />
-                          <stop offset="0.25" stopColor="#D4AF37" />
-                          <stop offset="0.5" stopColor="#FFF2C2" />
-                          <stop offset="0.75" stopColor="#B8860B" />
-                          <stop offset="1" stopColor="#E6C875" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
-                </div>
-
-                {/* --- Cover Footer: Click to Open Playbook --- */}
-                <div className="relative z-10 flex flex-col items-center text-center pb-2 space-y-1">
-                  <h3 className="font-inter text-base sm:text-[18px] font-bold text-white tracking-wide group-hover:text-[#A8E62E] transition-colors">
-                    Click to Open Playbook
-                  </h3>
-                  <p className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#A8E62E] uppercase">
-                    JOIN. BUILD. SUBMIT. ADVANCE.
-                  </p>
-                </div>
-
-                {/* --- 3. Spine Binding Overlay (Left Edge Realistic Emboss) --- */}
-                <div 
-                  className="pointer-events-none absolute left-0 top-0 bottom-0 w-[24px]"
-                  style={{
-                    background: "linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(255,255,255,0.12) 20%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.1) 85%, transparent 100%)",
-                    borderRight: "1px solid rgba(0,0,0,0.4)"
-                  }}
-                />
-                {/* Vertical crease shadow representing the hinge */}
-                <div className="pointer-events-none absolute left-[23px] top-0 bottom-0 w-[3px] bg-black/40 shadow-sm" />
-
-                {/* Cover Gloss Sheen across top edge */}
-                <div className="pointer-events-none absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-              </div>
+              {/* Ambient specular highlight across the book surface */}
+              <div className="pointer-events-none absolute inset-0 rounded-[22px] sm:rounded-[26px] bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
           </motion.div>
         </div>
