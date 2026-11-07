@@ -311,11 +311,8 @@ export default function HelpSupportView({
                   <MessageCircle className="h-4.5 w-4.5" />
                 </span>
               </div>
-              <h2 className="mt-4 text-lg font-black text-gray-900 tracking-tight flex items-center gap-2">
+              <h2 className="mt-4 text-lg font-black text-gray-900 tracking-tight">
                 Official WhatsApp
-                <span className="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
-                  Live
-                </span>
               </h2>
               <p className="mt-2 text-xs font-medium text-gray-600 leading-relaxed">
                 Follow the official CampusCode channel for announcements and important updates.
@@ -407,17 +404,10 @@ export default function HelpSupportView({
                     className="flex w-full items-start justify-between text-left gap-4 cursor-pointer group"
                   >
                     <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex rounded-md bg-purple-50 px-2 py-0.5 text-[10px] font-bold text-purple-700 uppercase">
-                          {faq.category}
-                        </span>
-                        {faq.popular && (
-                          <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-700">
-                            <Sparkles className="h-2.5 w-2.5" /> Popular
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="mt-1.5 text-sm font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+                      <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                        {faq.category}
+                      </p>
+                      <h3 className="mt-1 text-sm font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
                         {faq.question}
                       </h3>
                     </div>
@@ -450,10 +440,10 @@ export default function HelpSupportView({
       <div className="rounded-2xl border border-black/10 bg-gradient-to-r from-gray-900 to-black p-6 sm:p-8 text-white shadow-md">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-purple-300">
-              <ShieldCheck className="h-3 w-3" /> OFFICIAL ESCALATION DESK
-            </span>
-            <h2 className="mt-3 text-xl font-black tracking-tight">
+            <p className="font-mono text-xs font-bold uppercase tracking-wider text-purple-400">
+              OFFICIAL ESCALATION DESK
+            </p>
+            <h2 className="mt-2 text-xl font-black tracking-tight">
               Still have questions or facing a platform issue?
             </h2>
             <p className="mt-1 text-xs text-gray-300 leading-relaxed max-w-xl">

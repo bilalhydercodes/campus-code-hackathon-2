@@ -118,8 +118,9 @@ export default function ProfileView({
                 <h1 className="text-2xl font-black tracking-tight text-gray-900">
                   {name}
                 </h1>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">
-                  <ShieldCheck className="h-3.5 w-3.5" /> Verified Builder
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
+                  <ShieldCheck className="h-4 w-4" />
+                  <span>Verified Builder</span>
                 </span>
               </div>
               <p className="text-sm font-medium text-gray-500">
