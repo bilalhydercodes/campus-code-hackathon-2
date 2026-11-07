@@ -1,7 +1,4 @@
-"use client";
-
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Award,
   Zap,
@@ -9,15 +6,16 @@ import {
   Rocket,
   Trophy,
   Flame,
-  Cloud,
+  Layers,
   Sparkles,
   Download,
   Share2,
-  ExternalLink,
   CheckCircle2,
-  Filter,
+  X,
+  FileBadge,
 } from "lucide-react";
-import { AntigravityCertificate } from "@/components/ui/antigravity-certificate";
+import { AntigravityCertificate } from "../ui/antigravity-certificate";
+import { CampusBadge, PrimaryButton } from "../common";
 
 export interface CertificateItem {
   id: string;
@@ -28,6 +26,7 @@ export interface CertificateItem {
   glowColor: string;
   category: "Certificates" | "Achievements" | "Hackathons";
   badge?: string;
+  badgeVariant?: "purple" | "lime" | "neutral";
   credentialId?: string;
   skills?: string[];
   description?: string;
@@ -36,104 +35,112 @@ export interface CertificateItem {
 const CERTIFICATES_DATA: CertificateItem[] = [
   {
     id: "cert-1",
-    icon: <Award className="h-6 w-6 text-purple-400" />,
+    icon: <Award className="h-6 w-6 text-[#7665FF]" />,
     title: "Advanced React Patterns",
     issuer: "Frontend Masters",
     date: "NOV 2026",
-    glowColor: "rgba(168, 85, 247, 0.45)", // Purple
+    glowColor: "rgba(118, 101, 255, 0.28)", // CampusCode Purple
     category: "Certificates",
     badge: "Verified Credential",
+    badgeVariant: "lime",
     credentialId: "CC-FM-9942",
     skills: ["React 19", "Server Components", "Custom Hooks"],
-    description: "Mastery of advanced component architecture, state machines, and concurrency patterns.",
+    description: "Mastery of modern React architecture, compound components, concurrent rendering, and performance hooks.",
   },
   {
     id: "cert-2",
-    icon: <Zap className="h-6 w-6 text-cyan-400" />,
+    icon: <Zap className="h-6 w-6 text-[#A8E62E]" />,
     title: "Next.js Performance Tuning",
     issuer: "Vercel Academy",
     date: "OCT 2026",
-    glowColor: "rgba(34, 211, 238, 0.45)", // Cyan
+    glowColor: "rgba(168, 230, 46, 0.32)", // CampusCode Lime
     category: "Certificates",
     badge: "Top 5% Score",
+    badgeVariant: "purple",
     credentialId: "VA-PERF-8104",
-    skills: ["Edge Runtime", "Dynamic Caching", "ISR"],
-    description: "Sub-50ms TTFB optimization, bundle splitting, and edge image CDN pipeline mastery.",
+    skills: ["Edge Runtime", "Dynamic Caching", "Bundle Optimization"],
+    description: "Sub-50ms TTFB optimization, dynamic edge caching pipelines, and server-side streaming optimization.",
   },
   {
     id: "cert-3",
-    icon: <Shield className="h-6 w-6 text-emerald-400" />,
-    title: "Web Security Fundamentals",
+    icon: <Shield className="h-6 w-6 text-[#111111]" />,
+    title: "Web Security & Zero-Trust Auth",
     issuer: "Coursera",
     date: "AUG 2026",
-    glowColor: "rgba(52, 211, 153, 0.45)", // Emerald
+    glowColor: "rgba(17, 17, 17, 0.22)", // Ink Black
     category: "Certificates",
     badge: "Honors Pass",
+    badgeVariant: "neutral",
     credentialId: "COUR-SEC-3391",
-    skills: ["OWASP Top 10", "JWT Auth", "CSRF/XSS Defense"],
-    description: "Full-spectrum web application penetration defense and zero-trust authentication protocols.",
+    skills: ["OWASP Top 10", "JWT Auth", "CSRF Defense"],
+    description: "Comprehensive web application penetration defense, stateless JWT token rotation, and zero-trust auth headers.",
   },
   {
     id: "cert-4",
-    icon: <Rocket className="h-6 w-6 text-orange-400" />,
-    title: "Zero to Orbit: Three.js",
+    icon: <Rocket className="h-6 w-6 text-[#F59E0B]" />,
+    title: "Zero to Orbit: Three.js & WebGL",
     issuer: "ThreeJS Journey",
     date: "JUL 2026",
-    glowColor: "rgba(251, 146, 60, 0.45)", // Orange
+    glowColor: "rgba(245, 158, 11, 0.28)", // Warm Amber
     category: "Certificates",
     badge: "Master Project",
+    badgeVariant: "lime",
     credentialId: "3JS-ORBIT-192",
-    skills: ["WebGL", "GLSL Shaders", "Physics Simulation"],
-    description: "GPU-accelerated interactive 3D web environments and procedural shader engineering.",
+    skills: ["Three.js", "GLSL Shaders", "Physics Engine"],
+    description: "GPU-accelerated interactive 3D web environments, procedural GLSL shaders, and interactive camera controllers.",
   },
   {
     id: "cert-5",
-    icon: <Trophy className="h-6 w-6 text-rose-400" />,
+    icon: <Trophy className="h-6 w-6 text-[#7665FF]" />,
     title: "ReBuild '26 Grand Finalist",
     issuer: "CampusCode Arena",
     date: "NOV 2026",
-    glowColor: "rgba(244, 63, 94, 0.5)", // Rose
+    glowColor: "rgba(118, 101, 255, 0.35)", // CampusCode Purple
     category: "Hackathons",
     badge: "National Finalist",
+    badgeVariant: "purple",
     credentialId: "RB26-NAT-008",
     skills: ["Frontend Recreation", "Framer Motion", "Pixel Precision"],
     description: "Rebuilt the CampusCode platform with micro-interactions, mobile polish, and zero defects.",
   },
   {
     id: "cert-6",
-    icon: <Flame className="h-6 w-6 text-amber-400" />,
+    icon: <Flame className="h-6 w-6 text-[#E11D48]" />,
     title: "Speed Algorithm Sprint Champion",
     issuer: "CampusCode Arena",
     date: "SEP 2026",
-    glowColor: "rgba(245, 158, 11, 0.45)", // Amber
+    glowColor: "rgba(225, 29, 72, 0.28)", // Rose
     category: "Achievements",
     badge: "1st Place Gold",
+    badgeVariant: "lime",
     credentialId: "CC-SPRINT-01",
     skills: ["Algorithms", "Data Structures", "Speed Execution"],
     description: "Solved 5 complex graph and dynamic programming challenges in under 42 minutes.",
   },
   {
     id: "cert-7",
-    icon: <Cloud className="h-6 w-6 text-sky-400" />,
-    title: "Fullstack Cloud Architect",
-    issuer: "AWS & Vercel",
+    icon: <Layers className="h-6 w-6 text-[#7665FF]" />,
+    title: "Fullstack Architecture Specialist",
+    issuer: "Vercel & AWS",
     date: "JUN 2026",
-    glowColor: "rgba(56, 189, 248, 0.45)", // Sky
+    glowColor: "rgba(118, 101, 255, 0.25)", // Purple
     category: "Certificates",
-    badge: "Certified Specialist",
+    badge: "Certified",
+    badgeVariant: "neutral",
     credentialId: "AWS-FCA-5021",
     skills: ["Serverless", "Edge Lambdas", "PostgreSQL"],
-    description: "Architected multi-region serverless infrastructure handling 10k requests/second.",
+    description: "Architected multi-region serverless infrastructure handling 10k requests/second with zero downtime.",
   },
   {
     id: "cert-8",
-    icon: <Sparkles className="h-6 w-6 text-indigo-400" />,
+    icon: <Sparkles className="h-6 w-6 text-[#A8E62E]" />,
     title: "Open Source Contributor 2026",
     issuer: "GitHub Campus",
     date: "MAY 2026",
-    glowColor: "rgba(99, 102, 241, 0.45)", // Indigo
+    glowColor: "rgba(168, 230, 46, 0.3)", // Lime
     category: "Achievements",
     badge: "50+ PRs Merged",
+    badgeVariant: "lime",
     credentialId: "GH-CAMPUS-889",
     skills: ["Open Source", "Code Review", "Community Lead"],
     description: "Recognized for impactful contributions to modern TypeScript and UI animation tooling.",
@@ -152,120 +159,141 @@ export default function CertificatesView() {
   });
 
   return (
-    <div className="relative min-h-[calc(100vh-80px)] w-full overflow-hidden bg-[#07080e] p-4 sm:p-6 lg:p-10 text-white selection:bg-purple-500/30">
-      {/* Background Microgravity Grid & Ambient Nebula Gradients */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.18),rgba(255,255,255,0))]" />
-      <div className="pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full bg-purple-600/10 blur-[120px]" />
-      <div className="pointer-events-none absolute top-1/2 -right-40 h-96 w-96 rounded-full bg-cyan-600/10 blur-[140px]" />
-      <div className="pointer-events-none absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-emerald-600/10 blur-[130px]" />
+    <div className="relative mx-auto w-full max-w-[1240px] space-y-8 select-none">
+      {/* Soft Diffused Atmospheric Background Glows matching CampusCode Master Design */}
+      <div
+        className="pointer-events-none absolute -top-16 -left-16 h-96 w-96 rounded-full bg-[#7665FF]/[0.08] blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute top-40 -right-20 h-96 w-96 rounded-full bg-[#A8E62E]/[0.08] blur-3xl"
+        aria-hidden="true"
+      />
 
-      {/* Floating Space Dust Particles (Subtle Zero-G simulation) */}
-      <div className="pointer-events-none absolute inset-0 opacity-40">
-        <div className="absolute top-1/4 left-1/6 h-1 w-1 rounded-full bg-white animate-pulse" />
-        <div className="absolute top-1/3 right-1/4 h-1.5 w-1.5 rounded-full bg-cyan-400 blur-[0.5px] animate-pulse" />
-        <div className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-purple-400 animate-pulse" />
-        <div className="absolute top-2/3 right-1/6 h-2 w-2 rounded-full bg-emerald-400/80 blur-[1px] animate-ping duration-1000" />
-      </div>
+      {/* Hero Banner matching OverviewView / ReBuild '26 style */}
+      <div className="relative flex flex-col md:flex-row items-center justify-between gap-6 rounded-2xl bg-white border border-[#E5E5DF] p-6 sm:p-8 md:p-10 shadow-[0_4px_24px_rgba(17,17,17,0.04)] overflow-hidden">
+        {/* Subtle decorative background shapes */}
+        <div
+          className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#7665FF]/[0.06] blur-2xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute right-40 -bottom-10 h-48 w-48 rounded-full bg-[#A8E62E]/[0.07] blur-2xl"
+          aria-hidden="true"
+        />
 
-      <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-white/10">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-slate-300 mb-3 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
-              <span>ZERO-GRAVITY CREDENTIAL VAULT</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
-              Certificates &{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
-                Achievements
-              </span>
-            </h1>
-            <p className="mt-2 text-sm sm:text-base text-slate-400 max-w-2xl">
-              Suspended in digital zero-gravity. Verified credentials, hackathon accolades, and technical milestones earned across the CampusCode arena.
-            </p>
+        <div className="relative z-10 flex-1 space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <CampusBadge variant="purple" dot>
+              ZERO-G CREDENTIAL VAULT
+            </CampusBadge>
+            <CampusBadge variant="lime">
+              100% VERIFIED
+            </CampusBadge>
           </div>
 
-          {/* Quick Stats Pill */}
-          <div className="flex items-center gap-4 bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-2xl p-3 sm:px-5">
-            <div className="text-center px-2">
-              <div className="text-xl sm:text-2xl font-bold text-white font-mono">8</div>
-              <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Accreditations</div>
+          <h2 className="font-inter text-[28px] sm:text-[34px] md:text-[40px] font-semibold tracking-tight text-[#111111] leading-tight">
+            Certificates & Achievements
+          </h2>
+          <p className="max-w-[720px] font-inter text-[14.5px] sm:text-[15.5px] leading-relaxed text-[#71716D]">
+            Suspended in digital zero-gravity. Verified credentials, hackathon accolades, and technical milestones earned across the CampusCode arena.
+          </p>
+        </div>
+
+        {/* Live KPI Stat Cards */}
+        <div className="relative z-10 flex items-center gap-3 sm:gap-4 bg-[#F7F7F4] border border-[#E5E5DF] rounded-2xl p-3 sm:px-5 shrink-0">
+          <div className="text-center px-2">
+            <div className="font-mono text-2xl font-bold text-[#111111]">
+              {CERTIFICATES_DATA.length}
             </div>
-            <div className="h-8 w-px bg-white/10" />
-            <div className="text-center px-2">
-              <div className="text-xl sm:text-2xl font-bold text-emerald-400 font-mono">100%</div>
-              <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Verified</div>
+            <div className="font-mono text-[10px] uppercase tracking-wider text-[#71716D]">
+              Badges
             </div>
-            <div className="h-8 w-px bg-white/10" />
-            <div className="text-center px-2">
-              <div className="text-xl sm:text-2xl font-bold text-purple-400 font-mono">TOP 1%</div>
-              <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Rank</div>
+          </div>
+          <div className="h-8 w-px bg-[#E5E5DF]" />
+          <div className="text-center px-2">
+            <div className="font-mono text-2xl font-bold text-[#4D7C0F]">
+              100%
+            </div>
+            <div className="font-mono text-[10px] uppercase tracking-wider text-[#71716D]">
+              Verified
+            </div>
+          </div>
+          <div className="h-8 w-px bg-[#E5E5DF]" />
+          <div className="text-center px-2">
+            <div className="font-mono text-2xl font-bold text-[#7665FF]">
+              TOP 1%
+            </div>
+            <div className="font-mono text-[10px] uppercase tracking-wider text-[#71716D]">
+              Rank
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Filter Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-4 py-6">
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
-            {(["All", "Certificates", "Achievements", "Hackathons"] as CategoryFilter[]).map((tab) => (
+      {/* Filter Category Pills Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2 p-1 rounded-xl bg-white border border-[#E5E5DF] shadow-2xs">
+          {(["All", "Certificates", "Achievements", "Hackathons"] as CategoryFilter[]).map((tab) => {
+            const isActive = activeCategory === tab;
+            return (
               <button
                 key={tab}
+                type="button"
                 onClick={() => setActiveCategory(tab)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                  activeCategory === tab
-                    ? "bg-white/15 text-white shadow-sm border border-white/15"
-                    : "text-slate-400 hover:text-white hover:bg-white/[0.06]"
+                className={`px-4 py-2 rounded-lg font-inter text-[13px] font-medium transition-all cursor-pointer select-none ${
+                  isActive
+                    ? "bg-[#111111] text-white shadow-xs"
+                    : "text-[#71716D] hover:text-[#111111] hover:bg-[#F2F2EE]"
                 }`}
               >
                 {tab}
               </button>
-            ))}
-          </div>
-
-          <div className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
-            <Filter className="w-3.5 h-3.5 text-slate-500" />
-            <span>Showing {filteredItems.length} of {CERTIFICATES_DATA.length} records</span>
-          </div>
+            );
+          })}
         </div>
 
-        {/* The Antigravity Suspended Floating Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 pt-4 pb-16">
-          {filteredItems.map((cert, index) => (
-            <AntigravityCertificate
-              key={cert.id}
-              index={index}
-              icon={cert.icon}
-              title={cert.title}
-              issuer={cert.issuer}
-              date={cert.date}
-              glowColor={cert.glowColor}
-              badge={cert.badge}
-              credentialId={cert.credentialId}
-              skills={cert.skills}
-              actionLabel="View Credential"
-              onAction={() => setSelectedCert(cert)}
-            />
-          ))}
+        <div className="font-mono text-[12px] text-[#71716D] flex items-center gap-2">
+          <FileBadge className="w-4 h-4 text-[#7665FF]" />
+          <span>Showing {filteredItems.length} of {CERTIFICATES_DATA.length} verified credentials</span>
         </div>
       </div>
 
-      {/* Credential Modal Details */}
+      {/* The Antigravity Floating Certificates Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2 pb-12">
+        {filteredItems.map((cert, index) => (
+          <AntigravityCertificate
+            key={cert.id}
+            index={index}
+            icon={cert.icon}
+            title={cert.title}
+            issuer={cert.issuer}
+            date={cert.date}
+            glowColor={cert.glowColor}
+            badge={cert.badge}
+            badgeVariant={cert.badgeVariant}
+            credentialId={cert.credentialId}
+            skills={cert.skills}
+            actionLabel="View Credential"
+            onAction={() => setSelectedCert(cert)}
+          />
+        ))}
+      </div>
+
+      {/* Credential Verification Modal in CampusCode Style */}
       {selectedCert && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111111]/50 backdrop-blur-sm transition-opacity"
           onClick={() => setSelectedCert(null)}
         >
           <div
-            className="relative w-full max-w-lg rounded-3xl border border-white/20 bg-[#0e101b] p-6 sm:p-8 text-white shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] backdrop-blur-2xl"
+            className="relative w-full max-w-lg rounded-2xl border border-[#E5E5DF] bg-white p-6 sm:p-8 text-[#111111] shadow-[0_24px_50px_rgba(17,17,17,0.18)]"
             onClick={(e) => e.stopPropagation()}
-            style={{
-              boxShadow: `0 0 50px -10px ${selectedCert.glowColor}`,
-            }}
           >
+            {/* Modal Header */}
             <div className="flex items-start justify-between">
               <div
-                className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.05] border border-white/15 shadow-inner"
+                className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F7F7F4] border border-[#E5E5DF]"
                 style={{
                   boxShadow: `0 0 25px -4px ${selectedCert.glowColor}`,
                 }}
@@ -273,59 +301,69 @@ export default function CertificatesView() {
                 {selectedCert.icon}
               </div>
               <button
+                type="button"
                 onClick={() => setSelectedCert(null)}
-                className="rounded-full p-2 text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                className="rounded-full p-2 text-[#71716D] hover:text-[#111111] hover:bg-[#F2F2EE] transition-colors cursor-pointer"
+                aria-label="Close dialog"
               >
-                ✕
+                <X className="w-5 h-5" />
               </button>
             </div>
 
+            {/* Modal Content */}
             <div className="mt-5">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 font-mono mb-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#A8E62E]/20 border border-[#A8E62E]/40 text-[11px] text-[#4D7C0F] font-mono mb-2">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>Verified by {selectedCert.issuer}</span>
               </div>
-              <h3 className="text-2xl font-bold tracking-tight">{selectedCert.title}</h3>
-              <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+              <h3 className="font-inter text-2xl font-bold tracking-tight text-[#111111]">
+                {selectedCert.title}
+              </h3>
+              <p className="mt-2 text-sm text-[#4F4F4B] leading-relaxed">
                 {selectedCert.description}
               </p>
             </div>
 
-            <div className="mt-6 space-y-3 rounded-2xl bg-white/[0.03] border border-white/5 p-4 text-xs font-mono">
+            {/* Credential Metadata Box */}
+            <div className="mt-6 space-y-2.5 rounded-xl bg-[#F7F7F4] border border-[#E5E5DF] p-4 text-xs font-mono">
               <div className="flex justify-between">
-                <span className="text-slate-400">Issuer</span>
-                <span className="font-semibold text-white">{selectedCert.issuer}</span>
+                <span className="text-[#71716D]">Issuer</span>
+                <span className="font-semibold text-[#111111]">{selectedCert.issuer}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Issue Date</span>
-                <span className="text-white">{selectedCert.date}</span>
+                <span className="text-[#71716D]">Issue Date</span>
+                <span className="text-[#111111]">{selectedCert.date}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Credential ID</span>
-                <span className="text-purple-400 font-bold">{selectedCert.credentialId}</span>
+                <span className="text-[#71716D]">Credential ID</span>
+                <span className="text-[#7665FF] font-bold">{selectedCert.credentialId}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Verification</span>
-                <span className="text-emerald-400">Cryptographically Signed</span>
+                <span className="text-[#71716D]">Verification</span>
+                <span className="text-[#4D7C0F] font-medium">Cryptographically Signed</span>
               </div>
             </div>
 
+            {/* Modal Actions */}
             <div className="mt-6 flex items-center gap-3">
-              <button
+              <PrimaryButton
+                variant="primary"
+                size="md"
+                icon="arrow-pill"
+                className="flex-1"
                 onClick={() => alert(`Certificate ${selectedCert.credentialId} PDF downloading...`)}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#111111] font-semibold text-xs py-3 hover:bg-slate-200 transition-colors cursor-pointer"
               >
-                <Download className="w-4 h-4" />
-                <span>Download PDF</span>
-              </button>
+                Download PDF
+              </PrimaryButton>
               <button
+                type="button"
                 onClick={() => {
                   navigator.clipboard?.writeText(window.location.href);
-                  alert("Shareable link copied to clipboard!");
+                  alert("Shareable credential link copied to clipboard!");
                 }}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 text-white font-medium text-xs px-4 py-3 transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#E5E5DF] bg-[#F7F7F4] hover:bg-[#EAEAE5] px-5 py-2.5 text-[13px] font-medium text-[#111111] transition-colors cursor-pointer"
               >
-                <Share2 className="w-4 h-4" />
+                <Share2 className="w-4 h-4 text-[#71716D]" />
                 <span>Share</span>
               </button>
             </div>
