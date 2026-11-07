@@ -255,17 +255,29 @@ export function StudentGuideBook() {
             {/* Ground Ambient Drop Shadow */}
             <div className="absolute -bottom-8 left-8 right-8 h-12 rounded-[50%] bg-black/35 blur-2xl group-hover:scale-105 group-hover:opacity-75 transition-all duration-300" />
 
-            {/* The Hardcover Book Graphic */}
-            <div className="relative w-[300px] sm:w-[350px] md:w-[380px] drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)] transition-all duration-300">
+            {/* The Hardcover Book Graphic with instant inline blur backdrop */}
+            <div 
+              className="relative w-[300px] sm:w-[350px] md:w-[380px] aspect-[764/1024] rounded-[22px] sm:rounded-[26px] overflow-hidden drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)] transition-all duration-300 bg-[#18191E]"
+              style={{
+                backgroundImage: 'url("data:image/jpeg;base64,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")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
               <img
-                src="/assets/student-playbook-cover.png"
+                src="/assets/student-playbook-cover.jpg"
                 alt="CampusCode Student Playbook - Click to Open"
-                className="w-full h-auto block select-none rounded-[22px] sm:rounded-[26px]"
+                className="w-full h-full object-cover block select-none"
+                width={380}
+                height={510}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
                 draggable={false}
               />
 
               {/* Specular sheen on hover */}
-              <div className="pointer-events-none absolute inset-0 rounded-[22px] sm:rounded-[26px] bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           </motion.div>
         ) : (
@@ -274,10 +286,10 @@ export function StudentGuideBook() {
           /* Matches open layout description: Left TOC & Right Content    */
           /* ============================================================ */
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="w-full max-w-5xl"
           >
             {/* The 2D Open Book Container with Stacked Page Layers */}
