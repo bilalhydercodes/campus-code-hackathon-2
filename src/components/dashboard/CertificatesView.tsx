@@ -1,367 +1,292 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   Award,
-  Zap,
+  Code,
+  Monitor,
   Shield,
-  Rocket,
-  Trophy,
-  Flame,
-  Layers,
-  Sparkles,
-  Download,
   Share2,
+  Download,
+  ArrowRight,
   CheckCircle2,
   X,
-  FileBadge,
-} from "lucide-react";
-import { AntigravityCertificate } from "../ui/antigravity-certificate";
-import { CampusBadge, PrimaryButton } from "../common";
+} from 'lucide-react';
 
-export interface CertificateItem {
+export interface CertificateData {
   id: string;
-  icon: React.ReactNode;
+  iconType: 'award' | 'code' | 'monitor' | 'shield';
   title: string;
   issuer: string;
-  date: string;
-  glowColor: string;
-  category: "Certificates" | "Achievements" | "Hackathons";
-  badge?: string;
-  badgeVariant?: "purple" | "lime" | "neutral";
-  credentialId?: string;
-  skills?: string[];
-  description?: string;
+  issueDate: string;
+  verified: boolean;
+  isActive?: boolean;
+  credentialId: string;
+  skills: string[];
 }
 
-const CERTIFICATES_DATA: CertificateItem[] = [
+const CERTIFICATES: CertificateData[] = [
   {
-    id: "cert-1",
-    icon: <Award className="h-6 w-6 text-[#7665FF]" />,
-    title: "Advanced React Patterns",
-    issuer: "Frontend Masters",
-    date: "NOV 2026",
-    glowColor: "rgba(118, 101, 255, 0.28)", // CampusCode Purple
-    category: "Certificates",
-    badge: "Verified Credential",
-    badgeVariant: "lime",
-    credentialId: "CC-FM-9942",
-    skills: ["React 19", "Server Components", "Custom Hooks"],
-    description: "Mastery of modern React architecture, compound components, concurrent rendering, and performance hooks.",
+    id: 'cert-1',
+    iconType: 'award',
+    title: 'React Frontend Specialist',
+    issuer: 'Frontend Masters',
+    issueDate: 'Issued Nov 5, 2026',
+    verified: true,
+    isActive: true,
+    credentialId: 'CC-FM-2026-9942',
+    skills: ['React 19', 'Next.js', 'Tailwind CSS', 'Framer Motion'],
   },
   {
-    id: "cert-2",
-    icon: <Zap className="h-6 w-6 text-[#A8E62E]" />,
-    title: "Next.js Performance Tuning",
-    issuer: "Vercel Academy",
-    date: "OCT 2026",
-    glowColor: "rgba(168, 230, 46, 0.32)", // CampusCode Lime
-    category: "Certificates",
-    badge: "Top 5% Score",
-    badgeVariant: "purple",
-    credentialId: "VA-PERF-8104",
-    skills: ["Edge Runtime", "Dynamic Caching", "Bundle Optimization"],
-    description: "Sub-50ms TTFB optimization, dynamic edge caching pipelines, and server-side streaming optimization.",
+    id: 'cert-2',
+    iconType: 'code',
+    title: 'Advanced Web Security',
+    issuer: 'Coursera',
+    issueDate: 'Issued Oct 31, 2026',
+    verified: true,
+    credentialId: 'CC-COUR-2026-8812',
+    skills: ['OWASP Top 10', 'Zero-Trust Auth', 'JWT Security'],
   },
   {
-    id: "cert-3",
-    icon: <Shield className="h-6 w-6 text-[#111111]" />,
-    title: "Web Security & Zero-Trust Auth",
-    issuer: "Coursera",
-    date: "AUG 2026",
-    glowColor: "rgba(17, 17, 17, 0.22)", // Ink Black
-    category: "Certificates",
-    badge: "Honors Pass",
-    badgeVariant: "neutral",
-    credentialId: "COUR-SEC-3391",
-    skills: ["OWASP Top 10", "JWT Auth", "CSRF Defense"],
-    description: "Comprehensive web application penetration defense, stateless JWT token rotation, and zero-trust auth headers.",
+    id: 'cert-3',
+    iconType: 'monitor',
+    title: "ReBuild '26 Arena Hackathon",
+    issuer: 'CampusCode Engineering',
+    issueDate: 'Issued Oct 15, 2026',
+    verified: false,
+    credentialId: 'CC-RB26-NAT-008',
+    skills: ['Frontend Rebuild', 'UI/UX Engineering', 'Pixel Precision'],
   },
   {
-    id: "cert-4",
-    icon: <Rocket className="h-6 w-6 text-[#F59E0B]" />,
-    title: "Zero to Orbit: Three.js & WebGL",
-    issuer: "ThreeJS Journey",
-    date: "JUL 2026",
-    glowColor: "rgba(245, 158, 11, 0.28)", // Warm Amber
-    category: "Certificates",
-    badge: "Master Project",
-    badgeVariant: "lime",
-    credentialId: "3JS-ORBIT-192",
-    skills: ["Three.js", "GLSL Shaders", "Physics Engine"],
-    description: "GPU-accelerated interactive 3D web environments, procedural GLSL shaders, and interactive camera controllers.",
-  },
-  {
-    id: "cert-5",
-    icon: <Trophy className="h-6 w-6 text-[#7665FF]" />,
-    title: "ReBuild '26 Grand Finalist",
-    issuer: "CampusCode Arena",
-    date: "NOV 2026",
-    glowColor: "rgba(118, 101, 255, 0.35)", // CampusCode Purple
-    category: "Hackathons",
-    badge: "National Finalist",
-    badgeVariant: "purple",
-    credentialId: "RB26-NAT-008",
-    skills: ["Frontend Recreation", "Framer Motion", "Pixel Precision"],
-    description: "Rebuilt the CampusCode platform with micro-interactions, mobile polish, and zero defects.",
-  },
-  {
-    id: "cert-6",
-    icon: <Flame className="h-6 w-6 text-[#E11D48]" />,
-    title: "Speed Algorithm Sprint Champion",
-    issuer: "CampusCode Arena",
-    date: "SEP 2026",
-    glowColor: "rgba(225, 29, 72, 0.28)", // Rose
-    category: "Achievements",
-    badge: "1st Place Gold",
-    badgeVariant: "lime",
-    credentialId: "CC-SPRINT-01",
-    skills: ["Algorithms", "Data Structures", "Speed Execution"],
-    description: "Solved 5 complex graph and dynamic programming challenges in under 42 minutes.",
-  },
-  {
-    id: "cert-7",
-    icon: <Layers className="h-6 w-6 text-[#7665FF]" />,
-    title: "Fullstack Architecture Specialist",
-    issuer: "Vercel & AWS",
-    date: "JUN 2026",
-    glowColor: "rgba(118, 101, 255, 0.25)", // Purple
-    category: "Certificates",
-    badge: "Certified",
-    badgeVariant: "neutral",
-    credentialId: "AWS-FCA-5021",
-    skills: ["Serverless", "Edge Lambdas", "PostgreSQL"],
-    description: "Architected multi-region serverless infrastructure handling 10k requests/second with zero downtime.",
-  },
-  {
-    id: "cert-8",
-    icon: <Sparkles className="h-6 w-6 text-[#A8E62E]" />,
-    title: "Open Source Contributor 2026",
-    issuer: "GitHub Campus",
-    date: "MAY 2026",
-    glowColor: "rgba(168, 230, 46, 0.3)", // Lime
-    category: "Achievements",
-    badge: "50+ PRs Merged",
-    badgeVariant: "lime",
-    credentialId: "GH-CAMPUS-889",
-    skills: ["Open Source", "Code Review", "Community Lead"],
-    description: "Recognized for impactful contributions to modern TypeScript and UI animation tooling.",
+    id: 'cert-4',
+    iconType: 'shield',
+    title: 'Digital Leadership Program',
+    issuer: 'Collins Aerospace',
+    issueDate: 'Issued Jul 12, 2026',
+    verified: false,
+    credentialId: 'CC-COLLINS-2026-44',
+    skills: ['Systems Engineering', 'Leadership', 'Cloud Operations'],
   },
 ];
 
-type CategoryFilter = "All" | "Certificates" | "Achievements" | "Hackathons";
+const FEATURED_ITEMS = [
+  { id: 'f1', title: 'Get CampusCode on LinkedIn', link: 'https://www.linkedin.com/company/campuscode' },
+  { id: 'f2', title: 'Advanced React Frontend Specialist', link: '#' },
+  { id: 'f3', title: 'Web Security Fundamentals', link: '#' },
+];
 
 export default function CertificatesView() {
-  const [activeCategory, setActiveCategory] = useState<CategoryFilter>("All");
-  const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(null);
+  const [selectedCert, setSelectedCert] = useState<CertificateData | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const filteredItems = CERTIFICATES_DATA.filter((item) => {
-    if (activeCategory === "All") return true;
-    return item.category === activeCategory;
-  });
+  const handleShare = (cert: CertificateData, e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard?.writeText(`${window.location.origin}/certificates#${cert.id}`);
+    setCopiedId(cert.id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleDownload = (cert: CertificateData, e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert(`Downloading certificate: ${cert.title} (${cert.credentialId})`);
+  };
+
+  const renderIcon = (type: CertificateData['iconType']) => {
+    switch (type) {
+      case 'award':
+        return <Award className="w-6 h-6 text-[#111111]" strokeWidth={2.2} />;
+      case 'code':
+        return <Code className="w-6 h-6 text-[#111111]" strokeWidth={2.2} />;
+      case 'monitor':
+        return <Monitor className="w-6 h-6 text-[#111111]" strokeWidth={2.2} />;
+      case 'shield':
+        return <Shield className="w-6 h-6 text-[#111111]" strokeWidth={2.2} />;
+    }
+  };
 
   return (
-    <div className="relative mx-auto w-full max-w-[1240px] space-y-8 select-none">
-      {/* Soft Diffused Atmospheric Background Glows matching CampusCode Master Design */}
-      <div
-        className="pointer-events-none absolute -top-16 -left-16 h-96 w-96 rounded-full bg-[#7665FF]/[0.08] blur-3xl"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute top-40 -right-20 h-96 w-96 rounded-full bg-[#A8E62E]/[0.08] blur-3xl"
-        aria-hidden="true"
-      />
-
-      {/* Hero Banner matching OverviewView / ReBuild '26 style */}
-      <div className="relative flex flex-col md:flex-row items-center justify-between gap-6 rounded-2xl bg-white border border-[#E5E5DF] p-6 sm:p-8 md:p-10 shadow-[0_4px_24px_rgba(17,17,17,0.04)] overflow-hidden">
-        {/* Subtle decorative background shapes */}
-        <div
-          className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#7665FF]/[0.06] blur-2xl"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute right-40 -bottom-10 h-48 w-48 rounded-full bg-[#A8E62E]/[0.07] blur-2xl"
-          aria-hidden="true"
-        />
-
-        <div className="relative z-10 flex-1 space-y-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <CampusBadge variant="purple" dot>
-              ZERO-G CREDENTIAL VAULT
-            </CampusBadge>
-            <CampusBadge variant="lime">
-              100% VERIFIED
-            </CampusBadge>
-          </div>
-
-          <h2 className="font-inter text-[28px] sm:text-[34px] md:text-[40px] font-semibold tracking-tight text-[#111111] leading-tight">
-            Certificates & Achievements
-          </h2>
-          <p className="max-w-[720px] font-inter text-[14.5px] sm:text-[15.5px] leading-relaxed text-[#71716D]">
-            Suspended in digital zero-gravity. Verified credentials, hackathon accolades, and technical milestones earned across the CampusCode arena.
-          </p>
-        </div>
-
-        {/* Live KPI Stat Cards */}
-        <div className="relative z-10 flex items-center gap-3 sm:gap-4 bg-[#F7F7F4] border border-[#E5E5DF] rounded-2xl p-3 sm:px-5 shrink-0">
-          <div className="text-center px-2">
-            <div className="font-mono text-2xl font-bold text-[#111111]">
-              {CERTIFICATES_DATA.length}
-            </div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-[#71716D]">
-              Badges
-            </div>
-          </div>
-          <div className="h-8 w-px bg-[#E5E5DF]" />
-          <div className="text-center px-2">
-            <div className="font-mono text-2xl font-bold text-[#4D7C0F]">
-              100%
-            </div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-[#71716D]">
-              Verified
-            </div>
-          </div>
-          <div className="h-8 w-px bg-[#E5E5DF]" />
-          <div className="text-center px-2">
-            <div className="font-mono text-2xl font-bold text-[#7665FF]">
-              TOP 1%
-            </div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-[#71716D]">
-              Rank
-            </div>
-          </div>
-        </div>
+    <div className="mx-auto w-full max-w-[1240px] space-y-6">
+      {/* Title & Subtitle matching screenshot */}
+      <div className="space-y-1.5">
+        <h1 className="font-inter text-[32px] sm:text-[36px] font-bold text-[#111111] tracking-tight">
+          My Certificates
+        </h1>
+        <p className="font-inter text-[15px] text-[#71716D]">
+          Manage and verify your earned credentials
+        </p>
       </div>
 
-      {/* Filter Category Pills Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-2 p-1 rounded-xl bg-white border border-[#E5E5DF] shadow-2xs">
-          {(["All", "Certificates", "Achievements", "Hackathons"] as CategoryFilter[]).map((tab) => {
-            const isActive = activeCategory === tab;
+      {/* Main 2-Column Grid + Right Featured Column */}
+      <div className="flex flex-col lg:flex-row items-start gap-6">
+        {/* Left Side: 2-Column Certificates Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 w-full">
+          {CERTIFICATES.map((cert, index) => {
+            const isHighlighted = cert.isActive;
+
             return (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setActiveCategory(tab)}
-                className={`px-4 py-2 rounded-lg font-inter text-[13px] font-medium transition-all cursor-pointer select-none ${
-                  isActive
-                    ? "bg-[#111111] text-white shadow-xs"
-                    : "text-[#71716D] hover:text-[#111111] hover:bg-[#F2F2EE]"
+              <motion.div
+                key={cert.id}
+                animate={{ y: [0, -7, 0] }}
+                transition={{
+                  duration: 4.2 + (index % 2) * 0.8,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: index * 0.35,
+                }}
+                onClick={() => setSelectedCert(cert)}
+                className={`group relative flex flex-col justify-between rounded-[24px] bg-white p-7 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-1 ${
+                  isHighlighted
+                    ? 'border-2 border-[#7665FF]/60 ring-4 ring-[#7665FF]/[0.06]'
+                    : 'border border-[#E5E5DF] hover:border-[#7665FF]/40'
                 }`}
               >
-                {tab}
-              </button>
+                <div>
+                  {/* Top Row: Icon & Verified Badge */}
+                  <div className="flex items-start justify-between">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4F4F0] transition-transform duration-300 group-hover:scale-105">
+                      {renderIcon(cert.iconType)}
+                    </div>
+
+                    {cert.verified && (
+                      <span className="rounded-lg bg-[#F0EDFF] px-3 py-1 font-mono text-[11px] font-bold tracking-wider text-[#7665FF] uppercase select-none">
+                        VERIFIED
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title & Issuer */}
+                  <div className="mt-6 space-y-1 text-left">
+                    <h3 className="font-inter text-[20px] font-bold text-[#111111] tracking-tight leading-snug group-hover:text-[#7665FF] transition-colors">
+                      {cert.title}
+                    </h3>
+                    <p className="font-inter text-[14px] text-[#71716D]">
+                      {cert.issuer}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom Row: Issue Date & Actions */}
+                <div className="mt-8 flex items-center justify-between pt-2">
+                  <span className="font-inter text-[13px] text-[#71716D]">
+                    {cert.issueDate}
+                  </span>
+
+                  <div className="flex items-center gap-1.5 text-[#111111]">
+                    <button
+                      type="button"
+                      onClick={(e) => handleShare(cert, e)}
+                      title="Share Credential"
+                      className="rounded-full p-2 hover:bg-[#F4F4F0] hover:text-[#7665FF] transition-colors cursor-pointer"
+                    >
+                      {copiedId === cert.id ? (
+                        <CheckCircle2 className="w-4 h-4 text-[#4D7C0F]" />
+                      ) : (
+                        <Share2 className="w-4 h-4" strokeWidth={2} />
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={(e) => handleDownload(cert, e)}
+                      title="Download PDF"
+                      className="rounded-full p-2 hover:bg-[#F4F4F0] hover:text-[#7665FF] transition-colors cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" strokeWidth={2} />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
             );
           })}
         </div>
 
-        <div className="font-mono text-[12px] text-[#71716D] flex items-center gap-2">
-          <FileBadge className="w-4 h-4 text-[#7665FF]" />
-          <span>Showing {filteredItems.length} of {CERTIFICATES_DATA.length} verified credentials</span>
+        {/* Right Side: Featured Box matching screenshot */}
+        <div className="w-full lg:w-[320px] xl:w-[340px] shrink-0 rounded-[24px] bg-white border border-[#E5E5DF] p-6 shadow-sm">
+          <h2 className="font-inter text-[18px] font-bold text-[#111111] mb-2">
+            Featured
+          </h2>
+
+          <div className="divide-y divide-[#F0F0EC]">
+            {FEATURED_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={item.link}
+                target={item.link.startsWith('http') ? '_blank' : '_self'}
+                rel="noreferrer"
+                className="group flex items-center justify-between py-4.5 transition-colors cursor-pointer"
+              >
+                <span className="font-inter text-[14px] font-medium text-[#111111] group-hover:text-[#7665FF] transition-colors pr-3 leading-snug">
+                  {item.title}
+                </span>
+                <ArrowRight className="w-4 h-4 text-[#111111] group-hover:text-[#7665FF] group-hover:translate-x-1 transition-all shrink-0" strokeWidth={2} />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* The Antigravity Floating Certificates Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2 pb-12">
-        {filteredItems.map((cert, index) => (
-          <AntigravityCertificate
-            key={cert.id}
-            index={index}
-            icon={cert.icon}
-            title={cert.title}
-            issuer={cert.issuer}
-            date={cert.date}
-            glowColor={cert.glowColor}
-            badge={cert.badge}
-            badgeVariant={cert.badgeVariant}
-            credentialId={cert.credentialId}
-            skills={cert.skills}
-            actionLabel="View Credential"
-            onAction={() => setSelectedCert(cert)}
-          />
-        ))}
-      </div>
-
-      {/* Credential Verification Modal in CampusCode Style */}
+      {/* Modal Dialog for Certificate Details */}
       {selectedCert && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111111]/50 backdrop-blur-sm transition-opacity"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111111]/40 backdrop-blur-sm transition-opacity"
           onClick={() => setSelectedCert(null)}
         >
           <div
-            className="relative w-full max-w-lg rounded-2xl border border-[#E5E5DF] bg-white p-6 sm:p-8 text-[#111111] shadow-[0_24px_50px_rgba(17,17,17,0.18)]"
+            className="relative w-full max-w-lg rounded-[24px] border border-[#E5E5DF] bg-white p-7 text-[#111111] shadow-[0_24px_50px_rgba(17,17,17,0.16)]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
             <div className="flex items-start justify-between">
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F7F7F4] border border-[#E5E5DF]"
-                style={{
-                  boxShadow: `0 0 25px -4px ${selectedCert.glowColor}`,
-                }}
-              >
-                {selectedCert.icon}
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F4F4F0] text-[#111111]">
+                {renderIcon(selectedCert.iconType)}
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedCert(null)}
                 className="rounded-full p-2 text-[#71716D] hover:text-[#111111] hover:bg-[#F2F2EE] transition-colors cursor-pointer"
-                aria-label="Close dialog"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Modal Content */}
-            <div className="mt-5">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#A8E62E]/20 border border-[#A8E62E]/40 text-[11px] text-[#4D7C0F] font-mono mb-2">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>Verified by {selectedCert.issuer}</span>
-              </div>
-              <h3 className="font-inter text-2xl font-bold tracking-tight text-[#111111]">
+            <div className="mt-5 space-y-1">
+              <span className="rounded-lg bg-[#F0EDFF] px-3 py-1 font-mono text-[11px] font-bold tracking-wider text-[#7665FF] uppercase select-none">
+                VERIFIED CREDENTIAL
+              </span>
+              <h3 className="font-inter text-[22px] font-bold text-[#111111] tracking-tight pt-2">
                 {selectedCert.title}
               </h3>
-              <p className="mt-2 text-sm text-[#4F4F4B] leading-relaxed">
-                {selectedCert.description}
+              <p className="font-inter text-[14px] text-[#71716D]">
+                Issued by {selectedCert.issuer}
               </p>
             </div>
 
-            {/* Credential Metadata Box */}
             <div className="mt-6 space-y-2.5 rounded-xl bg-[#F7F7F4] border border-[#E5E5DF] p-4 text-xs font-mono">
               <div className="flex justify-between">
-                <span className="text-[#71716D]">Issuer</span>
-                <span className="font-semibold text-[#111111]">{selectedCert.issuer}</span>
+                <span className="text-[#71716D]">Credential ID</span>
+                <span className="font-bold text-[#7665FF]">{selectedCert.credentialId}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#71716D]">Status</span>
+                <span className="font-medium text-[#4D7C0F]">Verified on CampusCode</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#71716D]">Issue Date</span>
-                <span className="text-[#111111]">{selectedCert.date}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#71716D]">Credential ID</span>
-                <span className="text-[#7665FF] font-bold">{selectedCert.credentialId}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#71716D]">Verification</span>
-                <span className="text-[#4D7C0F] font-medium">Cryptographically Signed</span>
+                <span className="text-[#111111]">{selectedCert.issueDate}</span>
               </div>
             </div>
 
-            {/* Modal Actions */}
             <div className="mt-6 flex items-center gap-3">
-              <PrimaryButton
-                variant="primary"
-                size="md"
-                icon="arrow-pill"
-                className="flex-1"
-                onClick={() => alert(`Certificate ${selectedCert.credentialId} PDF downloading...`)}
-              >
-                Download PDF
-              </PrimaryButton>
               <button
                 type="button"
-                onClick={() => {
-                  navigator.clipboard?.writeText(window.location.href);
-                  alert("Shareable credential link copied to clipboard!");
-                }}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#E5E5DF] bg-[#F7F7F4] hover:bg-[#EAEAE5] px-5 py-2.5 text-[13px] font-medium text-[#111111] transition-colors cursor-pointer"
+                onClick={(e) => handleDownload(selectedCert, e)}
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-[#111111] text-white py-3 text-[13.5px] font-medium hover:bg-[#252525] transition-colors cursor-pointer"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download PDF</span>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => handleShare(selectedCert, e)}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#E5E5DF] bg-[#F7F7F4] hover:bg-[#EAEAE5] px-5 py-3 text-[13.5px] font-medium text-[#111111] transition-colors cursor-pointer"
               >
                 <Share2 className="w-4 h-4 text-[#71716D]" />
                 <span>Share</span>
