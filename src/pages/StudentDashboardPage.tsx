@@ -13,6 +13,7 @@ import CertificatesView from '../components/dashboard/CertificatesView';
 import StudentGuideView from '../components/dashboard/StudentGuideView';
 import ProfileView from '../components/dashboard/ProfileView';
 import NotificationsView from '../components/dashboard/NotificationsView';
+import OfficialCommunicationView from '../components/dashboard/OfficialCommunicationView';
 import { SquaresFour, Trophy, CalendarCheck, CreditCard, List } from 'phosphor-react';
 
 export default function StudentDashboardPage() {
@@ -88,6 +89,10 @@ export default function StudentDashboardPage() {
         return <ProfileView user={user} onUpdateUser={handleUpdateUser} />;
       case 'Notifications':
         return <NotificationsView userName={user.name} onNavigateTab={setActiveTab} />;
+      case 'Official Communication':
+      case 'Communication':
+      case 'Dispatches':
+        return <OfficialCommunicationView userName={user.name} onNavigateTab={setActiveTab} />;
       default:
         return <PlaceholderView title={activeTab} onNavigateTab={setActiveTab} />;
     }
