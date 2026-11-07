@@ -69,7 +69,7 @@ export default function StudentDashboardPage() {
         return <EventsView />;
       case 'Digital Card':
       case 'Digital ID':
-        return <DigitalIdView />;
+        return <DigitalIdView onNavigateTab={setActiveTab} />;
       case 'Certificates':
       case 'Achievements':
         return <CertificatesView />;

@@ -72,7 +72,7 @@ export default function DigitalIdPage() {
           onLogout={handleLogout}
         />
         <main className="relative z-10 flex flex-1 overflow-hidden p-2 xs:p-4 sm:p-6">
-          <DigitalIdView fullscreen />
+          <DigitalIdView fullscreen onNavigateTab={handleSelectTab} />
         </main>
       </div>
     </div>
